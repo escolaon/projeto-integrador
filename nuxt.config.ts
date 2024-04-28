@@ -1,7 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-
   modules: [
     "@nuxtjs/tailwindcss",
     "@nuxtjs/color-mode",
@@ -40,6 +39,8 @@ export default defineNuxtConfig({
   },
 
   app: {
+    pageTransition: { name: 'fade', mode: 'out-in' },
+    layoutTransition: { name: 'fade', mode: 'out-in' },
     head: {
       script: [{
         src: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.9/pdfmake.min.js",

@@ -1,75 +1,26 @@
-# Nuxt 3 Minimal Starter
+# Projeto Integrador
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+install git, node, docker, docker-compose
 
-## Setup
+---
 
-Make sure to install the dependencies:
+git clone git.com:mauriciobellon/projeto-integrador-1.git
 
-```bash
-# npm
-npm install
+git checkout -b nuxt
 
-# pnpm
-pnpm install
+cd projeto-integrador-1
 
-# yarn
-yarn install
+npx nuxi@latest init my-nuxt3-project --yes
 
-# bun
-bun install
-```
+mv my-nuxt3-project/* .
 
-## Development Server
+rm -r my-nuxt3-project
 
-Start the development server on `http://localhost:3000`:
+npx ui-thing@latest init --yes
 
-```bash
-# npm
-npm run dev
+npx ui-thing@latest add --all --yes
 
-# pnpm
-pnpm run dev
+npx ui-thing@latest theme --yes
 
-# yarn
-yarn dev
+npx ui-thing@latest prettier --yes
 
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
