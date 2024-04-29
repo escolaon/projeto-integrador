@@ -1,7 +1,7 @@
 <template>
 
   <div>
-    <UiContainer as="section" class="max-w-4xl py-5">
+    <UiContainer as="section" class=" py-5">
       <div class="flex items-center justify-between gap-5">
         <div>
           <h1 class="text-2xl font-semibold">Users</h1>

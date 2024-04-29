@@ -12,6 +12,8 @@ cd projeto-integrador-1
 
 npx nuxi@latest init my-nuxt3-project --yes
 
+bunx @nuxt/telemetry disable -g
+
 mv my-nuxt3-project/* .
 
 rm -r my-nuxt3-project

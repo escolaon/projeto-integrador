@@ -5,48 +5,49 @@ definePageMeta({
     layout: 'no-nav'
 });
 
-const isLoading = ref(false);
-const isPasswordVisible = ref(false);
-const isLoggedIn = ref(false);
+const email = ref("");
+const senha = ref("");
+const verEmail = ref(true);
+const verSenha = ref(false);
+const carregando = ref(false);
 
-async function onSubmit(event: Event) {
-    await event.preventDefault();
-    if (isPasswordVisible.value) {
-        isLoading.value = true;
-        await setTimeout(() => {
-            navigateTo("/app");
-        }, 500);
-    } else {
-        isLoading.value = true;
-        await setTimeout(() => {
-            isPasswordVisible.value = true;
-            document.getElementById("password")?.focus();
-            isLoading.value = false;
-        }, 500);
-        isLoggedIn.value = true;
+function onSubmit(event: Event) {
+    event.preventDefault();
+
+    if (verEmail.value) {
+        if (email.value === "") {
+            console.log("Email não pode ser vazio");
+            return;
+        } else {
+            carregando.value = true;
+            setTimeout(() => {
+                verEmail.value = false;
+                verSenha.value = true;
+                carregando.value = false;
+            }, 500);
+        }
+    }
+    if (verSenha.value) {
+        if (senha.value === "") {
+            console.log("Senha não pode ser vazia");
+            return;
+        } else {
+            carregando.value = true;
+            setTimeout(() => {
+                carregando.value = false;
+                navigateTo("/app");
+            }, 500);
+        }
     }
 }
 
-const sItens = ref([
-    { value: "nuxt", label: "Nuxt.js" },
-    { value: "next", label: "Next.js" },
-    { value: "sveltekit", label: "SvelteKit" },
-    { value: "astro", label: "Astro" },
-]);
 </script>
 
 <template>
     <div>
-        <div class="absolute
-      h-full
-      w-full
-      bg-[radial-gradient(theme(colors.border)_1px,transparent_2px)]
-      [background-size:20px_20px]
-      [mask-image:radial-gradient(ellipse_600px_600px_at_50%_50%,#000_50%,transparent_100%)]
-      md:[mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_50%,transparent_100%)]" />
         <div class="flex h-dvh items-center justify-center">
             <UiCard
-                class="relative m-4 grid h-[550px] w-full grid-cols-1 place-content-center rounded-lg border p-4 shadow-2xl sm:w-[508px]">
+                class="relative m-4 grid min-h-[550px] w-full grid-cols-1 place-content-center rounded-lg border p-4 shadow-2xl sm:w-[508px]">
                 <div
                     class="absolute inset-x-0 top-0 flex items-center justify-center rounded-t-lg bg-black p-1 shadow-lg">
                 </div>
@@ -63,29 +64,30 @@ const sItens = ref([
                 <UiCardHeader class="flex flex-col space-y-4 text-center">
                     <UiCardTitle class="text-2xl">Faça seu Login</UiCardTitle>
                     <UiCardDescription>
-                        <p v-if="!isPasswordVisible">Digite seu email para continuar.</p>
-                        <p v-else>Digite sua senha para entrar.</p>
+                        <p v-if="verEmail">Digite seu email para continuar.</p>
+                        <p v-if="verSenha">Digite sua senha para Entrar.</p>
                     </UiCardDescription>
                 </UiCardHeader>
                 <UiCardContent>
                     <form @submit="onSubmit">
                         <div class="grid w-full items-center gap-4">
-                            <div v-if="!isPasswordVisible" class="flex flex-col space-y-1.5">
+                            <div v-if="verEmail" class="flex flex-col space-y-1.5">
                                 <UiLabel class="sr-only" for="email"> Email </UiLabel>
-                                <UiInput id="email" placeholder="name@example.com" type="email" auto-capitalize="none"
-                                    auto-complete="email" auto-correct="off" class="h-12" />
+                                <UiInput v-model="email" id="email" placeholder="name@example.com" type="email"
+                                    auto-capitalize="none" auto-complete="email" auto-correct="off" class="h-12"
+                                    :disabled="carregando" />
                             </div>
-                            <div v-if="isPasswordVisible" class="flex flex-col space-y-1.5">
-                                <UiLabel v-if="isPasswordVisible" class="sr-only" for="email"> Senha </UiLabel>
-                                <UiInput v-if="isPasswordVisible" id="senha" placeholder="********" type="password"
-                                    auto-capitalize="none" auto-complete="password" auto-correct="off"
-                                    :disabled="isLoading" class="h-12" />
+                            <div v-if="verSenha" class="flex flex-col space-y-1.5">
+                                <UiLabel class="sr-only" for="email"> Senha </UiLabel>
+                                <UiInput v-model="senha" id="senha" placeholder="********" type="password"
+                                    auto-capitalize="none" auto-complete="password" auto-correct="off" class="h-12"
+                                    :disabled="carregando" />
                             </div>
-                            <UiButton type="submit" :disabled="isLoading" class="h-12">
-                                <Icon name="lucide:loader-2" color="white" v-if="isLoading"
+                            <UiButton type="submit" :disabled="carregando" class="h-12">
+                                <Icon name="lucide:loader-2" color="white" v-if="carregando"
                                     class="mr-2 h-4 w-4 animate-spin" />
-                                <p v-if="!isLoading && !isPasswordVisible">Continuar</p>
-                                <p v-if="!isLoading && isPasswordVisible">Entrar</p>
+                                <p v-if="verEmail">Continuar</p>
+                                <p v-if="verSenha">Entrar</p>
                             </UiButton>
                         </div>
                     </form>
