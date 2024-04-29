@@ -1,13 +1,13 @@
 {
-  "name": "nuxt-app",
-  "private": true,
+  "name": "playground",
   "type": "module",
+  "private": true,
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "dev": "nuxi dev",
+    "dev-sw": "SW=true nuxi dev",
+    "build": "nuxi build",
+    "build-sw": "SW=true nuxi build",
+    "generate": "nuxi generate"
   },
   "dependencies": {
     "@internationalized/date": "^3.5.2",
@@ -30,6 +30,7 @@
     "vue-sonner": "^1.1.2"
   },
   "devDependencies": {
+    "@vite-pwa/nuxt": "latest",
     "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
     "@nuxtjs/color-mode": "^3.4.1",
     "@nuxtjs/tailwindcss": "^6.12.0",

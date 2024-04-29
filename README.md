@@ -1,8 +1,9 @@
 # Projeto Integrador
 
-install git, node, docker, docker-compose
+install git, node, bun, nvm, docker, docker-compose
 
 ---
+
 
 git clone git.com:mauriciobellon/projeto-integrador-1.git
 
