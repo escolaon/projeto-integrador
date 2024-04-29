@@ -1,6 +1,6 @@
 import process from 'node:process'
 
-const sw = process.env.SW === 'true'
+const sw = 'true'
 
 export default defineNuxtConfig({
 
@@ -85,7 +85,14 @@ export default defineNuxtConfig({
       },
     },
     prerender: {
-      routes: ['/', '/entrar'],
+      routes: [
+        '/',
+        '/entrar',
+        '/cadastrar',
+        '/politicas',
+        '/termos',
+        '/app'
+      ],
     },
   },
   appConfig: {
@@ -124,10 +131,10 @@ export default defineNuxtConfig({
       ],
     },
     workbox: {
-      globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+      globPatterns: ['**/*.{js,css,html,png,svg,ico.vue,ts,tsx,jsx,json}'],
     },
     injectManifest: {
-      globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+      globPatterns: ['**/*.{js,css,html,png,svg,ico,vue,ts,tsx,jsx,json}'],
     },
     client: {
       installPrompt: true,
