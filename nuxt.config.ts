@@ -7,16 +7,18 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   /* ssr: false, */
   // typescript,
-  modules: ['@vite-pwa/nuxt',
-  "@nuxtjs/tailwindcss",
-  "@nuxtjs/color-mode",
-  "@vueuse/nuxt",
-  "nuxt-icon",
-  "@samk-dev/nuxt-vcalendar",
-  "@vee-validate/nuxt",
-  "@morev/vue-transitions/nuxt"
+  modules: [
+    '@vite-pwa/nuxt',
+    "@nuxtjs/tailwindcss",
+    "@nuxtjs/color-mode",
+    "@vueuse/nuxt",
+    "nuxt-icon",
+    "@samk-dev/nuxt-vcalendar",
+    "@vee-validate/nuxt",
+    "@morev/vue-transitions/nuxt",
+    '@pinia/nuxt',
+    "@nuxt/eslint"
   ],
-
 
   tailwindcss: {
     exposeConfig: true,
