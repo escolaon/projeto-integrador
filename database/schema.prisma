@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./database.db"
+}
+
+model Usuario {
+  id      Int    @id @default(autoincrement())
+  nome    String
+  email   String @unique
+  senha   String
+  celular String
+  // Escola      Escola[]
+  // Turma       Turma[]
+  // Aluno       Aluno[]
+  // Responsavel Responsavel[]
+  // Notificacao Notificacao[]
+  // Professor   Professor[]
+  // Coordenador Coordenador[]
+}
+
+// model Professor {
+//   id      Int     @id @default(autoincrement())
+//   nome    String
+//   Usuario Usuario @relation(fields: [id], references: [id])
+// }
+
+// model Coordenador {
+//   id      Int     @id @default(autoincrement())
+//   nome    String
+//   Usuario Usuario @relation(fields: [id], references: [id])
+// }
+
+// model Escola {
+//   id      Int     @id @default(autoincrement())
+//   nome    String
+//   Usuario Usuario @relation(fields: [id], references: [id])
+// }
+
+// model Turma {
+//   id              Int               @id @default(autoincrement())
+//   nome            String
+//   Usuario         Usuario           @relation(fields: [id], references: [id])
+//   AlunoTurma      AlunoTurma[]
+//   TurmaAluno      TurmaAluno[]
+//   Disciplina      Disciplina[]
+//   TurmaDisciplina TurmaDisciplina[]
+// }
+
+// model Aluno {
+//   id               Int                @id @default(autoincrement())
+//   nome             String
+//   Usuario          Usuario            @relation(fields: [id], references: [id])
+//   AlunoResponsavel AlunoResponsavel[]
+//   AlunoTurma       AlunoTurma[]
+//   ocorrencia       ocorrencia[]
+//   TurmaAluno       TurmaAluno[]
+// }
+
+// model TurmaAluno {
+//   id    Int   @id @default(autoincrement())
+//   Turma Turma @relation(fields: [id], references: [id])
+//   Aluno Aluno @relation(fields: [id], references: [id])
+// }
+
+// model Responsavel {
+//   id               Int                @id @default(autoincrement())
+//   nome             String
+//   Usuario          Usuario            @relation(fields: [id], references: [id])
+//   AlunoResponsavel AlunoResponsavel[]
+// }
+
+// model AlunoResponsavel {
+//   id          Int         @id @default(autoincrement())
+//   Aluno       Aluno       @relation(fields: [id], references: [id])
+//   Responsavel Responsavel @relation(fields: [id], references: [id])
+// }
+
+// model Disciplina {
+//   id              Int               @id @default(autoincrement())
+//   nome            String
+//   Turma           Turma             @relation(fields: [id], references: [id])
+//   TurmaDisciplina TurmaDisciplina[]
+// }
+
+// model TurmaDisciplina {
+//   id         Int        @id @default(autoincrement())
+//   Turma      Turma      @relation(fields: [id], references: [id])
+//   Disciplina Disciplina @relation(fields: [id], references: [id])
+// }
+
+// model AlunoTurma {
+//   id    Int   @id @default(autoincrement())
+//   Aluno Aluno @relation(fields: [id], references: [id])
+//   Turma Turma @relation(fields: [id], references: [id])
+// }
+
+// model ocorrencia {
+//   id                    Int                     @id @default(autoincrement())
+//   data                  DateTime
+//   descricao             String
+//   Aluno                 Aluno                   @relation(fields: [id], references: [id])
+//   NotificacaoOcorrencia NotificacaoOcorrencia[]
+//   TipoOcorrencia        TipoOcorrencia?         @relation(fields: [tipoOcorrenciaId], references: [id])
+//   tipoOcorrenciaId      Int?
+// }
+
+// model Notificacao {
+//   id                    Int                     @id @default(autoincrement())
+//   data                  DateTime
+//   descricao             String
+//   Usuario               Usuario                 @relation(fields: [id], references: [id])
+//   NotificacaoOcorrencia NotificacaoOcorrencia[]
+// }
+
+// model NotificacaoOcorrencia {
+//   id          Int         @id @default(autoincrement())
+//   Notificacao Notificacao @relation(fields: [id], references: [id])
+//   ocorrencia  ocorrencia  @relation(fields: [id], references: [id])
+// }
+
+// model TipoOcorrencia {
+//   id         Int          @id @default(autoincrement())
+//   tipo       String
+//   ocorrencia ocorrencia[]
+// }

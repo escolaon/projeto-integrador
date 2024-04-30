@@ -107,8 +107,8 @@ export default defineNuxtConfig({
     filename: sw ? 'sw.ts' : undefined,
     registerType: 'autoUpdate',
     manifest: {
-      name: 'Nuxt Vite PWA',
-      short_name: 'NuxtVitePWA',
+      name: 'Escola On',
+      short_name: 'EscolaOne',
       theme_color: '#ffffff',
       icons: [
         {
