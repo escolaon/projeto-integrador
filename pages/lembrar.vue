@@ -23,19 +23,16 @@ function onSubmit(event: Event) {
     }
 
 }
-
 </script>
-
 <template>
     <div>
-
         <UiButton @click="$colorMode.preference = $colorMode.value == 'dark' ? 'light' : 'dark'" variant="ghost"
             size="icon-sm" class="absolute left-8 top-8 hover:bg-accent hover:text-accent-foreground">
             <Icon name="lucide:sun-medium" class="h-4 w-4" />
         </UiButton>
 
         <div class="flex items-center justify-center">
-            <Icon name="heroicons-solid:lock-closed" class="h-16 w-16 text-accent" />
+            <Icon name="solar:map-point-school-broken" class="h-16 w-16 text-green-600" />
         </div>
 
         <UiCardHeader class="flex flex-col space-y-4 text-center">
@@ -53,7 +50,6 @@ function onSubmit(event: Event) {
                             auto-capitalize="none" auto-complete="email" auto-correct="off" class="h-12"
                             :disabled="carregando" />
                     </div>
-
                     <UiButton type="submit" :disabled="carregando" class="h-12">
                         <Icon name="lucide:loader-2" color="white" v-if="carregando"
                             class="mr-2 h-4 w-4 animate-spin" />
@@ -62,6 +58,12 @@ function onSubmit(event: Event) {
                 </div>
             </form>
         </UiCardContent>
-
+        <UiCardFooter class="text-center text-sm text-muted-foreground flex-none grid">
+            <p class="w-full">
+                <NuxtLink to="/entrar" class="underline underline-offset-4 hover:text-primary">
+                    Voltar
+                </NuxtLink>
+            </p>
+        </UiCardFooter>
     </div>
 </template>

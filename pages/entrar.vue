@@ -41,11 +41,10 @@ function onSubmit(event: Event) {
     }
 }
 </script>
-
 <template>
     <div>
         <div class="flex items-center justify-center">
-            <Icon name="heroicons-solid:lock-closed" class="h-16 w-16 text-accent" />
+            <Icon name="solar:map-point-school-broken" class="h-16 w-16 text-green-600" />
         </div>
         <UiCardHeader class="flex flex-col space-y-4 text-center">
             <UiCardTitle class="text-2xl">Faça seu Login</UiCardTitle>

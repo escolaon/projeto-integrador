@@ -76,7 +76,7 @@ export default defineNuxtConfig({
   },
   experimental: {
     payloadExtraction: true,
-    watcher: 'parcel',
+    watcher: 'parcel'
   },
   nitro: {
     esbuild: {
@@ -89,8 +89,7 @@ export default defineNuxtConfig({
         '/',
         '/entrar',
         '/cadastrar',
-        '/politicas',
-        '/termos',
+        '/lembrar',
         '/app'
       ],
     },

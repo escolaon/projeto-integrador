@@ -1,3 +1,5 @@
 <script setup lang="ts">
-navigateTo("/entrar");
+navigateTo('/entrar')
 </script>
+<template>
+</template>
