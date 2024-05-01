@@ -11,7 +11,7 @@ const verEmail = ref(true);
 const verSenha = ref(false);
 const carregando = ref(false);
 
-function onSubmit(event: Event) {
+const onSubmit = async (event) => {
     event.preventDefault();
 
     if (verEmail.value) {
@@ -33,10 +33,20 @@ function onSubmit(event: Event) {
             return;
         } else {
             carregando.value = true;
-            setTimeout(() => {
-                carregando.value = false;
+            const login = await $fetch('/api/autenticacao/entrar', {
+              method: 'POST',
+              body: {
+                email: email.value,
+                senha: senha.value,
+              },
+            });
+            console.log(login);
+            carregando.value = false;
+              if (login === "sucesso") {
                 navigateTo("/app");
-            }, 500);
+              } else {
+                navigateTo("/")
+              }
         }
     }
 }

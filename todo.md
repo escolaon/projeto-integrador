@@ -1,6 +1,20 @@
 # Preciso Fazer
 ---
-Autenticação do usuário
+api
+  autenticar
+    cadastrar.post.ts
+    entrar.post.ts
+    sair.post.ts
+    lembrar.post.ts
+    alterar.post.ts
+    
+
+    
+  api/autenticar/cadastrar.post.ts
+  entrar.post.ts
+  sair.post.ts
+  recuperarSenha.post.ts
+
 
 Integração com o banco de dados
 Api para o Model Escola

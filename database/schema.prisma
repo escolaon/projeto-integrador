@@ -13,6 +13,7 @@ model Usuario {
   email   String @unique
   senha   String
   celular String
+
   // Escola      Escola[]
   // Turma       Turma[]
   // Aluno       Aluno[]
