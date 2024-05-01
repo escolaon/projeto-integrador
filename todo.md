@@ -1,14 +1,27 @@
 # Precisamos Fazer
+---
+Autenticação do usuário
+
+Integração com o banco de dados
+Api para o Model Escola
+    Post /escola
+    Get /escola/:id
+    Put /escola/:id
+    Delete /escola/:id
+
+Frontend para o Model Escola
+    Cadastro de escola
+    Edição de escola
+    Exclusão de escola
 
 Merge para a branch main
+
 WhatsappConnect Server Middleware
+
 Permissões de Usuários
 
-
-
-
 ## Telas de Cadastro
-
+---
 Cadastros:
     - Usuários
     - Escolas
