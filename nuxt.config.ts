@@ -17,7 +17,8 @@ export default defineNuxtConfig({
     "@vee-validate/nuxt",
     "@morev/vue-transitions/nuxt",
     '@pinia/nuxt',
-    "@nuxt/eslint"
+    "@nuxt/eslint",
+    "clsx"
   ],
 
   tailwindcss: {
