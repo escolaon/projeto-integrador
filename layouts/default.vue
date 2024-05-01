@@ -3,7 +3,7 @@
     <UiNavbar sticky>
       <UiContainer class="flex h-14 items-center justify-between sticky">
         <NuxtLink to="/">
-          <p class="text-lg text-zinc-700 font-light">
+          <p class="text-lg primary font-medium">
             <Icon name="solar:map-point-school-broken" class="h-12 w-12 text-green-600" />
             Escola On
           </p>
