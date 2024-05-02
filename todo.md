@@ -1,15 +1,30 @@
 # Preciso Fazer
 ---
 api
-  autenticar
-    cadastrar.post.ts
-    entrar.post.ts
-    sair.post.ts
-    lembrar.post.ts
-    alterar.post.ts
-    
+    autenticar
+        cadastrar.post.ts
+        entrar.post.ts
+        sair.post.ts
+        lembrar.post.ts
+        alterar.post.ts
+    escola
+        post.ts
+        get.ts
+        put.ts
+        delete.ts
+    turma
+        post.ts
+        get.ts
+        put.ts
+        delete.ts
+    aluno
+        post.ts
+        get.ts
+        put.ts
+        delete.ts
 
-    
+
+
   api/autenticar/cadastrar.post.ts
   entrar.post.ts
   sair.post.ts
