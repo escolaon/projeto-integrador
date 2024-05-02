@@ -2,11 +2,19 @@
 ---
 api
     autenticar
-        cadastrar.post.ts
         entrar.post.ts
+            will autenticate the user and return the user and a token
+        cadastrar.post.ts
+            will create a new user and return true
         sair.post.ts
+            will logout the user and return true
         lembrar.post.ts
+            will send an email to the user with a link to reset the password
         alterar.post.ts
+            will change the user name, email, password and phone and return the user
+        estaLogado.get.ts
+            receives a token and returns true if the token is valid
+            
     escola
         post.ts
         get.ts
@@ -25,10 +33,7 @@ api
 
 
 
-  api/autenticar/cadastrar.post.ts
-  entrar.post.ts
-  sair.post.ts
-  recuperarSenha.post.ts
+
 
 
 Integração com o banco de dados
