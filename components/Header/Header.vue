@@ -7,7 +7,7 @@
         size="icon-sm">
         <Icon name="lucide:sun-medium" class="h-4 w-4" />
       </UiButton>
-      <UiAvatar v-if="isLogged" @click="navigateTo('/entrar')" class="hover:border-2 border-primary hover:opacity-75" size="sm"
+      <UiAvatar v-if="isLogged" @click="navigateTo('/entrar')" class="select-none hover:border-2 border-primary hover:opacity-75" size="sm"
         :alt="userName"
         :fallback="obterIniciais(userName)"
         :delay-ms="0"
