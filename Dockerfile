@@ -1,9 +1,9 @@
-FROM oven/bun
-# USER bun
-# EXPOSE 3000/tcp
-WORKDIR /usr/src/app
+FROM node
+EXPOSE 3000/tcp
+WORKDIR /app
 COPY . .
-RUN bun run init
-RUN bun run migrate
-RUN bun run build
-CMD bun run prod
+RUN npm ci
+RUN npm run db:generate
+RUN npm run db:migrate
+RUN npm run db:seed
+RUN npm run dev

@@ -1,6 +1,5 @@
 services:
   pi:
-    container_name: pi
     build: ./
     ports:
       - 3000:3000
