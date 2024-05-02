@@ -27,8 +27,8 @@ model Aluno {
   email               String
   endereco            String
   nomeResponsavel     String
-  telefone            String
-  telefoneResponsavel String
+  celular            String
+  celularResponsavel String
   turma               Turma              @relation(fields: [turmaId], references: [id])
   turmaId             Int              
 }

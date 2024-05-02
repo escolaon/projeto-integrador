@@ -1,52 +1,83 @@
-  <script setup lang="ts">
-  import { ref } from "vue";
-  import { fetchTurmas } from "../server/turmas";
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
   
-  const nome = ref("");
-  const email = ref("");
-  const endereco = ref("");
-  const nomeResponsavel = ref("");
-  const telefone = ref("");
-  const telefoneResponsavel = ref("");
-  const celular = ref("");
-  const carregando = ref(false);
-  const selectedTurma = ref<number | null>(null);
-  const turmas = ref<any[]>([]);
-  
-  async function onSubmit(event: Event) {
-    event.preventDefault();
-  
-    if (!nome.value || !email.value || !celular.value || !endereco.value || !nomeResponsavel.value || !telefone.value ||
-      !telefoneResponsavel.value || !selectedTurma.value) {
-      console.log("Todos os campos são obrigatórios");
-      return;
-    }
-  
-    carregando.value = true;
-  
-    try {
-      carregando.value = false;
-      console.log("Aluno cadastrado com sucesso!");
-    } catch (error) {
-      console.error("Erro ao salvar aluno no banco de dados:", error);
-      carregando.value = false;
-    }
+const nome = ref("");
+const email = ref("");
+const endereco = ref("");
+const nomeResponsavel = ref("");
+const celular = ref("");
+const celularResponsavel = ref("");
+const carregando = ref(false);
+const selectedTurma = ref<number | null>(null);
+const turmas = ref<any[]>([]);
+const erro = ref<string>("");
+const success = ref<string>("");
+ 
+async function onSubmit(event: Event) {
+  event.preventDefault();
+
+  if (!nome.value || !email.value || !endereco.value || !nomeResponsavel.value || !celular.value ||
+    !celularResponsavel.value || !selectedTurma.value) {
+    erro.value = "Todos os campos são obrigatórios"; 
+    setTimeout(() => {
+      erro.value = ""; 
+    }, 5000);
+    return;
   }
   
-  import { onMounted } from "vue";
-  onMounted(async () => {
-    try {
-      carregando.value = true;
-      turmas.value = await fetchTurmas();
-      carregando.value = false;
-    } catch (error) {
-      console.error("Erro ao carregar as turmas:", error);
-      carregando.value = false;
-    }
+  carregando.value = true;
+ 
+  try {
+  const response = await fetch('/api/salva/aluno', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      nome: nome.value,
+      email: email.value,
+      endereco: endereco.value,
+      nomeResponsavel: nomeResponsavel.value,
+      celular: celular.value,
+      celularResponsavel: celularResponsavel.value,
+      idTurma: selectedTurma.value
+    }),
   });
-  </script>
-  
-  <template>
+  if (!response.ok) {
+    throw new Error('Erro ao salvar aluno');
+  }
+    carregando.value = false;
+    success.value = "Aluno cadastrado com sucesso!";
+    setTimeout(() => {
+      success.value = "";
+    }, 5000);
+  } catch (error) {
+    carregando.value = false;
+    erro.value = "Erro ao salvar aluno no banco de dados";
+    setTimeout(() => {
+      erro.value = "";
+    }, 5000);
+  }
+}
+ 
+onMounted(async () => {
+  try {
+    carregando.value = true;
+    const response = await fetch('/api/busca/turmas');
+    turmas.value = await response.json();
+    carregando.value = false;
+  } catch (error) {
+    console.error("Erro ao carregar as turmas:", error);
+    carregando.value = false;
+    erro.value = "Erro ao carregar as turmas"; 
+    setTimeout(() => {
+      erro.value = ""; 
+    }, 5000);
+  }
+});
+</script>
+
+<template>
     <div>
       <div class="flex items-center justify-center">
         <Icon name="solar:map-point-school-broken" class="h-16 w-16 text-green-600" />
@@ -64,12 +95,12 @@
             </div>
             <div class="flex flex-col space-y-1.5">
               <UiLabel class="sr-only" for="email"> Email </UiLabel>
-              <UiInput v-model="email" id="email" placeholder="name@example.com" type="email" auto-capitalize="none"
+              <UiInput v-model="email" id="email" placeholder="E-mail" type="email" auto-capitalize="none"
                 auto-complete="email" auto-correct="off" class="h-12" :disabled="carregando" />
             </div>
             <div class="flex flex-col space-y-1.5">
               <UiLabel class="sr-only" for="endereco"> Celular </UiLabel>
-              <UiInput v-model="celular" id="endereco" placeholder="Rua A" type="tel" auto-capitalize="none"
+              <UiInput v-model="endereco" id="endereco" placeholder="Endereço" type="tel" auto-capitalize="none"
                 auto-complete="endereco" auto-correct="off" class="h-12" :disabled="carregando" />
             </div>
             <div class="flex flex-col space-y-1.5">
@@ -79,14 +110,14 @@
             </div>
             <div class="flex gap-4">
               <div class="flex flex-col flex-grow space-y-1.5">
-                <UiLabel class="sr-only" for="telefone"> Telefone </UiLabel>
-                <UiInput v-model="telefone" id="telefone" placeholder="Telefone: (xx)-xxxxx-xxxx" type="tel" auto-capitalize="none"
-                  auto-complete="telefone" auto-correct="off" class="h-12" :disabled="carregando" />
+                <UiLabel class="sr-only" for="celular"> Celular </UiLabel>
+                <UiInput v-model="celular" id="celular" placeholder="Celular: xxxxxxxxxxx" type="tel" auto-capitalize="none"
+                  auto-complete="celular" auto-correct="off" class="h-12" :disabled="carregando" />
               </div>
-              <div class="flex flex-col flex-grow space-y-0.5">
-                <UiLabel class="sr-only" for="telefoneResponsavel"> Telefone Responsável</UiLabel>
-                <UiInput v-model="telefoneResponsavel" id="telefoneResponsavel" placeholder="Telefone Responsável: (xx)-xxxxx-xxxx" type="tel" auto-capitalize="none"
-                  auto-complete="telefoneResponsavel" auto-correct="off" class="h-12" :disabled="carregando" />
+              <div class="flex flex-col flex-grow space-y-1.5">
+                <UiLabel class="sr-only" for="celularResponsavel"> Celular Responsável</UiLabel>
+                <UiInput v-model="celularResponsavel" id="celularResponsavel" placeholder="Celular: xxxxxxxxxxx" type="tel" auto-capitalize="none"
+                  auto-complete="celularResponsavel" auto-correct="off" class="h-12" :disabled="carregando" />
               </div>
             </div>
             <div class="flex flex-col space-y-1.5">
@@ -100,8 +131,10 @@
               <Icon name="lucide:loader-2" color="white" v-if="carregando" class="mr-2 h-4 w-4 animate-spin" />
               <p>Cadastrar</p>
             </UiButton>
+            <p v-if="erro" class="text-red-500 text-center">{{ erro }}</p>
+            <p v-if="success" class="text-green-500 text-center">{{ success }}</p>
           </div>
         </form>
       </UiCardContent>
     </div>
-  </template>
+</template>
