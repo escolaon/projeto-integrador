@@ -1,20 +1,22 @@
 {
-  "name": "playground",
+  "name": "projeto-integrador-1",
   "type": "module",
   "private": true,
   "scripts": {
+    "db:delete": "npm .\\database\\delete.js",
     "db:generate": "npx prisma generate",
     "db:migrate": "npx prisma migrate dev --name init",
     "db:seed": "npx prisma db seed",
     "db:studio": "npx prisma studio",
-    "db:delete": "node .\\database\\delete.js",
     "db": "npm run db:generate && npm run db:migrate && npm run db:seed",
-    "prepare": "nuxi prepare",
-    "dev": "nuxi dev",
-    "dev-sw": "SW=true nuxi dev",
-    "build": "nuxi build",
-    "build-sw": "SW=true nuxi build",
-    "generate": "nuxi generate"
+    "prepare": "npx nuxi@latest prepare",
+    "generate": "nuxi@latest generate",
+    "build": "nuxi@latest build",
+    "build-sw": "SW=true nuxi@latest build",
+    "dev": "npx nuxi@latest dev",
+    "dev-sw": "SW=true nuxi@latest dev",
+    "start": "nuxi@latest start",
+    "docker": "docker build --pull -t pi . && docker run -p 3000:3000 pi"
   },
   "dependencies": {
     "@internationalized/date": "^3.5.2",
@@ -46,12 +48,12 @@
     "@nuxt/eslint": "^0.3.10",
     "@nuxtjs/color-mode": "^3.4.1",
     "@nuxtjs/tailwindcss": "^6.12.0",
+    "clsx": "^2.1.1",
     "@pinia/nuxt": "^0.5.1",
     "@samk-dev/nuxt-vcalendar": "^1.0.3",
     "@vite-pwa/nuxt": "^0.7.0",
     "@vueuse/core": "^10.9.0",
     "@vueuse/nuxt": "^10.9.0",
-    "clsx": "^2.1.1",
     "nuxt": "^3.11.2",
     "nuxt-icon": "^0.6.10",
     "prettier": "^3.2.5",
@@ -62,6 +64,6 @@
   },
   "prisma": {
     "schema": "database/schema.prisma",
-    "seed": "bun database/seed.js"
+    "seed": "node database/seed.js"
   }
 }
