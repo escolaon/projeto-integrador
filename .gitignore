@@ -89,3 +89,6 @@ sw.*
 
 ._*
 .tokens
+database.db
+00_schema.sql
+database.db-journal

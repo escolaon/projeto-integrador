@@ -3,6 +3,13 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "db:generate": "npx prisma generate",
+    "db:migrate": "npx prisma migrate dev --name init",
+    "db:seed": "npx prisma db seed",
+    "db:studio": "npx prisma studio",
+    "db:delete": "node .\\database\\delete.js",
+    "db": "npm run db:generate && npm run db:migrate && npm run db:seed",
+    "prepare": "nuxi prepare",
     "dev": "nuxi dev",
     "dev-sw": "SW=true nuxi dev",
     "build": "nuxi build",
@@ -49,7 +56,7 @@
     "nuxt-icon": "^0.6.10",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.14",
-    "prisma": "latest",
+    "prisma": "^5.13.0",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.4.5"
   },
