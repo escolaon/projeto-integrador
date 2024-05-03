@@ -29,7 +29,7 @@ async function onSubmit(event: Event) {
 
   try {
 
-    const response = await $fetch('/api/salva/aluno', {
+    await $fetch('/api/salva/aluno', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,7 +44,6 @@ async function onSubmit(event: Event) {
         idTurma: selectedTurma.value
       },
     });
-    console.log(response);
     carregando.value = false;
     success.value = "Aluno cadastrado com sucesso!";
     setTimeout(() => {
