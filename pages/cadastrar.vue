@@ -2,7 +2,11 @@
 import { ref } from "vue";
 
 definePageMeta({
-  layout: "nonav"
+  layout: "nonav",
+  auth: {
+    unauthenticatedOnly: true,
+    navigateAuthenticatedTo: '/',
+  },
 });
 
 const nome = ref("");
@@ -48,10 +52,18 @@ function onSubmit(event: Event) {
       return;
     } else {
       carregando.value = true;
-      setTimeout(() => {
-        carregando.value = false;
-        navigateTo("/app");
-      }, 500);
+
+      const { data } = useFetch('/api/cadastrar', {
+        method: 'POST',
+        body: {
+          nome: nome.value,
+          email: email.value,
+          senha: senha.value,
+          celular: '',
+        },
+      });
+
+      navigateTo("/");
     }
   }
 }

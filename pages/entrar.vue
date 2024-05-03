@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-definePageMeta({
-    layout: "nonav",
-});
-
+const { signIn } = useAuth()
 const email = ref("");
 const senha = ref("");
 const verEmail = ref(true);
 const verSenha = ref(false);
 const carregando = ref(false);
+
+definePageMeta({
+    layout: "nonav",
+    auth: {
+        unauthenticatedOnly: true,
+        navigateAuthenticatedTo: '/',
+    },
+})
 
 const onSubmit = async (event) => {
     event.preventDefault();
@@ -33,20 +38,8 @@ const onSubmit = async (event) => {
             return;
         } else {
             carregando.value = true;
-            const login = await $fetch('/api/autenticacao/entrar', {
-              method: 'POST',
-              body: {
-                email: email.value,
-                senha: senha.value,
-              },
-            });
-            console.log(login);
+            signIn('credentials', { email: email.value, senha: senha.value })
             carregando.value = false;
-              if (login === "sucesso") {
-                navigateTo("/app");
-              } else {
-                navigateTo("/")
-              }
         }
     }
 }
@@ -91,9 +84,6 @@ const onSubmit = async (event) => {
             <p class="flex justify-between w-full">
                 <NuxtLink to="/cadastrar" class="underline underline-offset-4 hover:text-primary">
                     Cadastre-se
-                </NuxtLink>
-                <NuxtLink to="/lembrar" class="underline underline-offset-4 hover:text-primary">
-                    Lembrar Senha
                 </NuxtLink>
             </p>
         </UiCardFooter>
