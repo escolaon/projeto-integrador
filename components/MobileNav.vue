@@ -7,9 +7,6 @@
         <UiScrollArea class="h-[calc(100dvh-20px)] w-full p-5">
           <div class="sticky top-0 mb-3 w-full bg-background">
             <div class="flex items-center gap-3.5">
-              <div class="flex h-8 w-8 items-center justify-center rounded">
-                <Icon name="solar:map-point-school-broken" class="h-8 w-8" />
-              </div>
               <p class="text-xl font-bold">Menu</p>
               <UiSheetClose class="ml-auto">
                 <Icon name="lucide:x" />
@@ -26,22 +23,22 @@
 
 <script lang="ts" setup>
 
-type Link = {
-  _path: string;
-  title: string;
-  icon?: string;
-  children?: Link[];
-  label?: string;
-};
+  type Link = {
+    _path: string;
+    title: string;
+    icon?: string;
+    children?: Link[];
+    label?: string;
+  };
 
-const props = defineProps<{
-  links: Link[];
-  modelValue?: boolean;
-}>();
+  const props = defineProps<{
+    links: Link[];
+    modelValue?: boolean;
+  }>();
 
-const emits = defineEmits<{
-  "update:modelValue": [value: boolean];
-}>();
+  const emits = defineEmits<{
+    "update:modelValue": [value: boolean];
+  }>();
 
-const localModel = useVModel(props, "modelValue", emits, { passive: true });
+  const localModel = useVModel(props, "modelValue", emits, { passive: true });
 </script>

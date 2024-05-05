@@ -1,0 +1,25 @@
+{
+    "prettier.vueIndentScriptAndStyle": true,
+    "vue.server.hybridMode": true,
+    "vue-format.html_indent_root": true,
+    "nuxtr.vueFiles.style.alwaysScoped": true,
+    "vue.format.script.initialIndent": true,
+    "vue.format.style.initialIndent": true,
+    "vue-format.js-beautify": {
+        "indent_size": "editor.tabSize",
+        "indent_char": " ",
+        "indent_with_tabs": false,
+        "brace-style": "collapse",
+        "space_after_anon_function": true,
+        "css": {},
+        "js": {},
+        "html": {
+            "force_format": [
+                "template"
+            ]
+        }
+    },
+    "[vue]": {
+        "editor.defaultFormatter": "Vue.volar"
+    }
+}

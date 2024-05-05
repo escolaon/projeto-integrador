@@ -37,6 +37,7 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     "nuxt-swiper",
   ],
+
   tailwindcss: {
     exposeConfig: true,
     viewer: true,
@@ -143,6 +144,6 @@ export default defineNuxtConfig({
   },
   experimental: {
     payloadExtraction: true,
-    watcher: 'parcel'
+    watcher: 'chokidar-granular'
   },
 });
