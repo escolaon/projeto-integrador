@@ -1,27 +1,22 @@
-import { PrismaClient } from '@prisma/client';
-
+import { H3Event } from 'h3'
+// @ts-ignore
+import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient();
 
-export default async function salvarAluno(req, res) {
-  try {
-    console.log(req.body);
-    const { nome, email, endereco, nomeResponsavel, celular, celularResponsavel, idTurma } = req.body;
-
-    const novoAluno = await prisma.aluno.create({
-      data: {
-        nome: nome,
-        email: email,
-        endereco: endereco,
-        nomeResponsavel: nomeResponsavel,
-        celular: celular,
-        celularResponsavel: celularResponsavel,
-        turma: {
-          connect: { id: idTurma }
-        }
+export default defineEventHandler(async (event: H3Event) => {
+  const { nome, email, endereco, nomeResponsavel, celular, celularResponsavel, idTurma } = await readBody(event);
+  const novoAluno = await prisma.aluno.create({
+    data: {
+      nome,
+      email,
+      endereco,
+      nomeResponsavel,
+      celular,
+      celularResponsavel,
+      turma: {
+        connect: { id: idTurma }
       }
-    });
-    res.status(200).json(novoAluno);
-  } catch (error) {
-    res.status(500).json({ error: `Erro ao salvar aluno no banco de dados: ${error.message}` });
-  }
-}
+    }
+  });
+  return (novoAluno);
+})
