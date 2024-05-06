@@ -6,13 +6,7 @@ export default defineEventHandler(() => {
       icon: "lets-icons:home-duotone",
     },
     {
-      _path: "/escola",
-      title: "Minha Escola",
-      icon: "lets-icons:home-duotone",
-      userType: "coordenador",
-    },
-    {
-      _path: "/professores",
+      _path: "/professor",
       title: "Professor",
       icon: "lets-icons:home-duotone",
       userType: "coordenador",
