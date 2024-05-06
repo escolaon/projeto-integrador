@@ -34,4 +34,5 @@
     const styles = tv({
         base: "flex flex-col sm:text-sm",
     });
+
 </script>
