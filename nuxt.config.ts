@@ -6,7 +6,7 @@ const themeColor = "#111827";
 const url = process.env.PUBLIC_URL;
 
 export default defineNuxtConfig({
-  devtools: { enabled: false },
+  devtools: { enabled: true },
   vite: {
     optimizeDeps: {
       include: [

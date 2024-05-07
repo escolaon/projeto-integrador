@@ -4,11 +4,12 @@
             <NuxtLink
                 class="h-10 rounded-md ps-3 flex items-center line-clamp-1 shrink-0 text-ellipsis text-base text-muted-foreground  hover:font-bold sm:text-sm"
                 exact-active-class="text-primary font-bold bg-muted" :to="l._path" :title="l.title">
-                <Icon v-if="l.icon" :name="l.icon" class="h-6 w-6" /> {{ l.title }}
+                <Icon v-if="l.icon" :name="l.icon" class="h-7 w-7 mr-2" /> {{ l.title }}
             </NuxtLink>
             <UiBadge v-if="l.label" class="px-2 py-0 text-[10px] dark:bg-lime-500">
                 {{ l.label }}
             </UiBadge>
+            <UiDivider v-if="l._path === '/inicio'" class="mt-4 mb-4" />
         </template>
     </nav>
 </template>

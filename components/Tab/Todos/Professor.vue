@@ -1,27 +1,30 @@
 <template>
   <UiTabsContent value="Todos">
-    <UiCard title="Todos" class="border-none shadow-none"
-      description="Selecione os alunos que deseja enviar a notificação">
+    <UiCard title="" class="border-none shadow-none" description="">
 
       <template #content>
-        <UiCardContent class="space-y-2">
-
+        <UiCardContent class="">
 
           <UiDatatable :options="options" :columns="columns" :data="users">
 
             <!-- Edit Button -->
             <template #actions="{ cellData }: { cellData: Staff }">
+              <UiButton class="h-7 text-xs mr-2" size="sm" @click.stop="
+                useSonner('Editing...', {
+                  description: `You are editing the user ${cellData?.name}.`,
+                })">
+                Editar
+              </UiButton>
               <UiButton class="h-7 text-xs" size="sm" @click.stop="
                 useSonner('Editing...', {
                   description: `You are editing the user ${cellData?.name}.`,
                 })">
-                Edit
+                Excluir
               </UiButton>
             </template>
             <!-- Edit Button -->
 
           </UiDatatable>
-
 
         </UiCardContent>
       </template>

@@ -1,5 +1,5 @@
 <template>
-  <header class="sticky top-0 z-30 border-b bg-background/80 backdrop-blur">
+  <header class="sticky top-0 z-30 border-b bg-background/50 backdrop-blur">
     <div class="container flex h-14 items-center justify-between">
       <div class="flex items-center gap-10">
         <div class="flex items-center gap-5">
@@ -22,7 +22,7 @@
           </UiDropdownMenuTrigger>
           <UiDropdownMenuContent align="end" :side-offset="5">
             <UiDropdownMenuItem v-for="(m, i) in profileMenu" :key="i" class="cursor-pointer" :icon="m.icon"
-                                :title="m.title" @click="profileGoto(m.value)" />
+              :title="m.title" @click="profileGoto(m.value)" />
           </UiDropdownMenuContent>
         </UiDropdownMenu>
       </div>
