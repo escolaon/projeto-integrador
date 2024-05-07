@@ -11,31 +11,9 @@
             EscolaON
           </NuxtLink>
         </div>
-
       </div>
-
       <div class="flex items-center">
-        <!-- 
-        <UiDropdownMenu>
-          <UiDropdownMenuTrigger as-child>
-            <UiButton class="h-9 w-9" variant="ghost" size="icon"
-              ><Icon :name="currentIcon || 'lucide:sun'" class="h-[18px] w-[18px]"/>
-            </UiButton>
-          </UiDropdownMenuTrigger>
-          <UiDropdownMenuContent align="end" :side-offset="5">
-            <UiDropdownMenuItem
-              v-for="(m, i) in modes"
-              :key="i"
-              class="cursor-pointer"
-              :icon="m.icon"
-              :title="m.title"
-              @click="setTheme(m.value)"
-            />
-          </UiDropdownMenuContent>
-        </UiDropdownMenu> -->
-
         <AppearanceSwitch @click="$colorMode.preference = $colorMode.value == 'dark' ? 'light' : 'dark'" />
-
         <UiDropdownMenu>
           <UiDropdownMenuTrigger as-child>
             <UiButton class="h-10 w-10 rounded-full" variant="ghost" size="icon">
@@ -44,11 +22,9 @@
           </UiDropdownMenuTrigger>
           <UiDropdownMenuContent align="end" :side-offset="5">
             <UiDropdownMenuItem v-for="(m, i) in profileMenu" :key="i" class="cursor-pointer" :icon="m.icon"
-              :title="m.title" @click="profileGoto(m.value)" />
+                                :title="m.title" @click="profileGoto(m.value)" />
           </UiDropdownMenuContent>
         </UiDropdownMenu>
-
-
       </div>
     </div>
     <MobileNav v-model="mobileNav" :links="links" />
@@ -56,51 +32,48 @@
 </template>
 
 <script lang="ts" setup>
-const modes = [
-  { icon: "lucide:sun", title: "Light", value: "light" },
-  { icon: "lucide:moon", title: "Dark", value: "dark" },
-  { icon: "lucide:laptop", title: "System", value: "system" },
-];
 
+  const modes = [
+    { icon: "lucide:sun", title: "Light", value: "light" },
+    { icon: "lucide:moon", title: "Dark", value: "dark" },
+    { icon: "lucide:laptop", title: "System", value: "system" },
+  ];
 
-const profileMenu = [
-  { icon: "fluent:person-12-regular", title: "Perfil", value: "perfil" },
-  { icon: "fluent:settings-16-regular", title: "Configurações", value: "configuracoes" },
-  { icon: "fluent:sign-out-20-regular", title: "Sair", value: "sair" },
-];
+  const profileMenu = [
+    { icon: "fluent:person-12-regular", title: "Perfil", value: "perfil" },
+    { icon: "fluent:settings-16-regular", title: "Configurações", value: "configuracoes" },
+    { icon: "fluent:sign-out-20-regular", title: "Sair", value: "sair" },
+  ];
 
+  const props = defineProps<{
+    links: Link[];
+  }>();
 
-const props = defineProps<{
-  links: Link[];
-}>();
+  type Link = {
+    _path: string;
+    title: string;
+    icon?: string;
+    children?: Link[];
+    label?: string;
+  };
 
-type Link = {
-  _path: string;
-  title: string;
-  icon?: string;
-  children?: Link[];
-  label?: string;
-};
+  const profileGoto = (val: string) => {
+    if (val === "sair") {
+      useAuth().signOut();
+    } else {
+      navigateTo("/" + val);
+    }
+  };
 
+  const mobileNav = ref(false);
 
+  const colorMode = useColorMode();
+  const setTheme = (val: string) => {
+    colorMode.preference = val;
+  };
 
-const profileGoto = (val: string) => {
-  if (val === "sair") {
-    useAuth().signOut()
-  } else {
-    navigateTo('/' + val)
-  }
-};
-
-const mobileNav = ref(false);
-
-const colorMode = useColorMode();
-const setTheme = (val: string) => {
-  colorMode.preference = val;
-};
-
-const currentIcon = computed(() => {
-  return modes.find((m) => m.value === colorMode?.preference)?.icon;
-});
+  const currentIcon = computed(() => {
+    return modes.find((m) => m.value === colorMode?.preference)?.icon;
+  });
 
 </script>
