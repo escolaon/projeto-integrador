@@ -1,28 +1,29 @@
 <template>
   <UiTabsContent value="Todos">
     <UiCard title="Todos" class="border-none shadow-none"
-      description="Make changes to your account here. Click save when you're done.">
+      description="Selecione os alunos que deseja enviar a notificação">
+
       <template #content>
         <UiCardContent class="space-y-2">
 
 
           <UiDatatable :options="options" :columns="columns" :data="users">
+
+            <!-- Edit Button -->
             <template #actions="{ cellData }: { cellData: Staff }">
               <UiButton class="h-7 text-xs" size="sm" @click.stop="
                 useSonner('Editing...', {
                   description: `You are editing the user ${cellData?.name}.`,
-                })
-                ">Edit</UiButton>
+                })">
+                Edit
+              </UiButton>
             </template>
+            <!-- Edit Button -->
+
           </UiDatatable>
 
 
         </UiCardContent>
-      </template>
-      <template #footer>
-        <UiCardFooter>
-          <UiButton>Save changes</UiButton>
-        </UiCardFooter>
       </template>
     </UiCard>
   </UiTabsContent>
@@ -55,7 +56,7 @@
             office: faker.location.city(),
             age: faker.number.int(80),
             start_date: useDateFormat(faker.date.past().toISOString(), "MMMM DD, YYYY").value,
-            salary: faker.finance.amount({ symbol: "$" }),
+            salary: faker.finance.amount({ symbol: "R$" }),
           };
         });
         resolve(users);
@@ -90,15 +91,18 @@
         text: "Columns",
         columns: ":not(.no-export)",
       },
+      "selectAll",
+      "selectNone",
       "copy",
       "excel",
-      "pdf",
-      "print",
-      "csv",
+      "pdf"
     ],
     dom: "Q<'flex flex-col lg:flex-row w-full lg:items-start lg:justify-between gap-5 mb-5'Bf><'border rounded-lg't><'flex flex-col lg:flex-row gap-5 lg:items-center lg:justify-between pt-3 p-5'li><''p>",
     responsive: true,
     autoWidth: true,
-    select: false,
+    select: {
+      style: "multi",
+      blurable: false,
+    }
   };
 </script>
