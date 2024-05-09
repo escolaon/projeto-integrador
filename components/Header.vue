@@ -2,7 +2,7 @@
   <header class="sticky top-0 z-30 border-b bg-background/50 backdrop-blur">
     <div class="container flex h-14 items-center justify-between">
       <div class="flex items-center gap-10">
-        <div class="flex items-center gap-5">
+        <div class="flex items-center ml-5 gap-5">
           <UiButton size="icon-sm" variant="outline" class="h-9 w-9 lg:hidden" @click="mobileNav = true">
             <Icon name="heroicons:bars-2" class="h-4 w-4" />
           </UiButton>
