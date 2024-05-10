@@ -1,6 +1,7 @@
 <template>
   <UiTabsContent value="Todos" class="mt-4">
     <UiDatatable :options="options" :columns="columns" :data="users">
+      
       <!-- Edit Button -->
       <template #actions="{ cellData }: { cellData: Staff }">
         <form>
