@@ -92,3 +92,5 @@ sw.*
 database.db
 00_schema.sql
 database.db-journal
+package-lock.json
+pnpm-lock.yaml
