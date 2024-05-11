@@ -3,6 +3,35 @@
         "nome": "Mauricio Faria Bellon",
         "email": "mauriciobellon@gmail.com",
         "senha": "$2b$10$PmI51SqJpTJ4stgWqPZIyefKyeIckhIixW2QQmzDBG5L464jNYnKa",
-        "celular": "5519974057577"
+        "celular": "5519974057577",
+        "tipo": "admin"
+    },
+    {
+        "nome": "João da Silva",
+        "email": "joao@escola.com",
+        "senha": "$2b$10$PmI51SqJpTJ4stgWqPZIyefKyeIckhIixW2QQmzDBG5L464jNYnKa",
+        "celular": "5519974057577",
+        "tipo": "professor"
+    },
+    {
+        "nome": "Carlos da Silva",
+        "email": "carlos@escola.com",
+        "senha": "$2b$10$PmI51SqJpTJ4stgWqPZIyefKyeIckhIixW2QQmzDBG5L464jNYnKa",
+        "celular": "5519974057577",
+        "tipo": "professor"
+    },
+    {
+        "nome": "Rafael Costa",
+        "email": "rafael@escola.com",
+        "senha": "$2b$10$PmI51SqJpTJ4stgWqPZIyefKyeIckhIixW2QQmzDBG5L464jNYnKa",
+        "celular": "5519974057577",
+        "tipo": "professor"
+    },
+    {
+        "nome": "Maria da Silva",
+        "email": "maria@escola.com",
+        "senha": "$2b$10$PmI51SqJpTJ4stgWqPZIyefKyeIckhIixW2QQmzDBG5L464jNYnKa",
+        "celular": "5519974057577",
+        "tipo": "professor"
     }
 ]

@@ -9,11 +9,11 @@
             </p>
         </div>
         <div class="text-sm">
-            Content
+            <DynamicForm modelName="Usuario" />
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-definePageMeta({ middleware: 'auth' })
+    definePageMeta({ middleware: 'auth' })
 </script>

@@ -1,7 +1,7 @@
 <template>
   <UiTabsContent value="Todos" class="mt-4">
     <UiDatatable :options="options" :columns="columns" :data="users">
-
+      
       <!-- Edit Button -->
       <template #actions="{ cellData }: { cellData: Staff }">
         <form>
@@ -110,32 +110,25 @@
     salary: string;
   }
 
-  // const { data: users } = await useAsyncData<Staff[]>(
-  //   "fakerUsers",
-  //   () => {
-  //     return new Promise((resolve) => {
-  //       const users = Array.from({ length: 8 }, () => {
-  //         return {
-  //           name: faker.person.fullName(),
-  //           position: faker.person.jobTitle(),
-  //           office: faker.location.city(),
-  //           age: faker.number.int(80),
-  //           start_date: useDateFormat(faker.date.past().toISOString(), "MMMM DD, YYYY").value,
-  //           salary: faker.finance.amount({ symbol: "R$ " }),
-  //         };
-  //       });
-  //       resolve(users);
-  //     });
-  //   },
-  //   { default: () => [] }
-  // );
-
-
-
-  // getUsuariosProfessores()
-
-  const professores = 
-
+  const { data: users } = await useAsyncData<Staff[]>(
+    "fakerUsers",
+    () => {
+      return new Promise((resolve) => {
+        const users = Array.from({ length: 8 }, () => {
+          return {
+            name: faker.person.fullName(),
+            position: faker.person.jobTitle(),
+            office: faker.location.city(),
+            age: faker.number.int(80),
+            start_date: useDateFormat(faker.date.past().toISOString(), "MMMM DD, YYYY").value,
+            salary: faker.finance.amount({ symbol: "R$ " }),
+          };
+        });
+        resolve(users);
+      });
+    },
+    { default: () => [] }
+  );
 
   const columns: ConfigColumns[] = [
     { data: "name", title: "Name" },
