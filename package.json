@@ -3,7 +3,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "db:delete": "npm .\\database\\delete.js",
+    "db:delete": "node databaseDelete.js",
     "db:generate": "npx prisma generate",
     "db:migrate": "npx prisma migrate dev --name init",
     "db:seed": "npx prisma db seed",

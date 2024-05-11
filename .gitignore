@@ -89,8 +89,9 @@ sw.*
 
 ._*
 .tokens
-database.db
-00_schema.sql
-database.db-journal
+/database/database.db
+/database/00_schema.sql
+/database/database.db-journal
 package-lock.json
 pnpm-lock.yaml
+yarn.lock
