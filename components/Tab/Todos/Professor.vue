@@ -1,10 +1,17 @@
 <template>
-  <UiTabsContent value="Todos" class="mt-4">
-    <UiDatatable @ready="tableRef = $event" :options="options" :columns="columns" :data="data">
 
-      <template #actions="{ cellData }">
-        <button @click="edit(cellData)">Editar</button> |
-        <button @click="remove(cellData)">Excluir</button>
+  <UiTabsContent value="Todos" class="mt-4">
+    <UiDatatable @ready="initializeTable" :options="options" :columns="columns" :data="data">
+
+      <template #actions="{ cellData }" class="flex items-center m-0 p-0">
+        <UiButton variant="outline" @click="edit(cellData, $event)" class="px-2 m-0 mr-2 h-8">
+          Editar
+        </UiButton>
+
+        <UiButton variant="destructive" @click="remove(cellData, $event)" class="px-2 m-0 ml-2 h-8">
+          Deletar
+        </UiButton>
+
       </template>
 
     </UiDatatable>
@@ -15,11 +22,21 @@
   <AlertDialogRoot v-model:open="modalState">
     <AlertDialogPortal>
       <AlertDialogOverlay
-        class="bg-background/80 backdrop-blur-sm data-[state=open]:animate-overlayShow fixed inset-0 z-30" />
+        class="bg-background/80 backdrop-blur-sm data-[state=open]:animate-overlayShow fixed inset-0 z-30">
+
+        <div class="absolute
+                h-full
+                w-full
+                dark:bg-[radial-gradient(theme(colors.border)_1px,transparent_1px)]
+                bg-[radial-gradient(theme(colors.border)_1px,transparent_1px)]
+                [background-size:15px_15px]
+                [mask-image:radial-gradient(ellipse_600px_600px_at_50%_50%,#000_10%,transparent_100%)]" />
+
+      </AlertDialogOverlay>
       <AlertDialogContent
-        class="z-[100] text-[15px] data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-secondary p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px, _hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none shadow-xl">
+        class="z-[100] text-[15px] data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[700px] translate-x-[-50%] translate-y-[-50%] rounded-lg bg-primary-foreground dark:bg-black p-[25px] shadow-[0_0px_50px_-30px_rgba(0,0,0,0.5)] dark:shadow-[0_0px_80px_-50px_rgba(0,0,0,0.5)] dark:shadow-gray-500 sm:w-[700px] focus:outline-none border border-input  ">
         <AlertDialogTitle class="text-xl font-semibold mb-4">
-          {{ isEditing ? 'Editar Usuário' : 'Adicionar Novo Usuário' }}
+          {{ isEditing ? 'Editar Professor' : 'Adicionar Novo Professor' }}
         </AlertDialogTitle>
         <AlertDialogDescription class="text-mauve11 mt-4 mb-5 text-[15px] leading-normal">
           <form @submit.prevent="handleSave">
@@ -60,7 +77,7 @@
 
 </template>
 <script lang="ts" setup>
-  import { ref, shallowRef } from 'vue';
+  import { ref, shallowRef, watch, reactive } from 'vue';
   import type DataTableRef from 'datatables.net';
   import type { Config, ConfigColumns } from 'datatables.net';
   import languageBR from 'datatables.net-plugins/i18n/pt-BR.mjs';
@@ -76,19 +93,25 @@
     AlertDialogTrigger,
   } from 'radix-vue';
 
-  const modalState = ref(false);
+  const selectedRows = ref(0);
   const isEditing = ref(false);
+  const modalState = ref(false);
   const editingRowIndex = ref<number | null>(null);
 
-  const newUser = ref({
+  const newUser = reactive({
     id: null,
     nome: '',
     email: '',
     celular: '',
   });
 
+  const data = await $fetch<any>("http://localhost:3000/api/professor");
+
+  const tableRef = shallowRef<InstanceType<typeof DataTableRef<any[]>> | null>(null);
+
   const options: Config = {
-    dom: "<'flex flex-col lg:flex-row w-full lg:items-start lg:justify-between gap-5 mb-5 lg:pr-1'Bf><'border rounded-lg't><'flex flex-col lg:flex-row gap-5 lg:items-center lg:justify-between pt-3 p-5'li><'w-fit m-auto'p>",
+
+    dom: "<'flex flex-col lg:flex-row w-full lg:items-start lg:justify-between gap-5 mb-5 lg:pr-1'Bf><'border rounded-lg't><'flex flex-col lg:flex-row gap-5 items-center lg:justify-between w-full pt-3 p-5 m-auto'lp>",
     searching: true,
     language: languageBR,
     paging: true,
@@ -97,26 +120,25 @@
     autoWidth: true,
     select: {
       style: "multi",
-      blurable: false,
     },
     buttons: [
       {
-        text: "Selecionar Todos",
+        text: (selectedRows.value > 0 ? "Desselecionar" : "Selecionar Todos"),
         action: function (e, dt, node, config) {
-          dt.rows().select();
-        },
-      },
-      {
-        text: "Desselecionar",
-        action: function (e, dt, node, config) {
-          dt.rows().deselect();
+          if (selectedRows.value > 0) {
+            dt.rows().deselect();
+            selectedRows.value = 0;
+          } else {
+            dt.rows().select();
+            selectedRows.value = dt.rows({ selected: true }).count();
+          }
         },
       },
       {
         text: "Novo",
         action: function (e, dt, node, config) {
           isEditing.value = false;
-          newUser.value = { id: null, nome: '', email: '', celular: '' }; // Reset newUser object
+          Object.assign(newUser, { id: null, nome: '', email: '', celular: '' }); // Reset newUser object
           modalState.value = true;
         },
       }
@@ -135,16 +157,65 @@
       orderable: false,
       name: "actions",
       render: "#actions",
-      responsivePriority: 1
+      responsivePriority: 3,
+
     }
   ];
 
-  const data = await $fetch<any>("http://localhost:3000/api/professor");
-
-  const tableRef = shallowRef<InstanceType<typeof DataTableRef<any[]>> | null>(null);
 
 
-  function remove(user: any) {
+
+
+
+  // ------------------------------------------------------------
+
+  watch(selectedRows, (newValue) => {
+    const selectButton = tableRef.value?.button(0); // Select/Deselect button index is 0
+    if (selectButton) {
+      selectButton.text(newValue > 0 ? 'Selecionar Nenhum' : 'Selecionar Todos');
+    }
+  });
+
+  function initializeTable(instance: any) {
+    tableRef.value = instance;
+    tableRef.value?.on('select.dt deselect.dt', updateSelectedRowsCount);
+    bindActionButtons();
+  }
+
+
+  function updateSelectedRowsCount() {
+    selectedRows.value = tableRef.value?.rows({ selected: true }).count() || 0;
+  }
+
+  function bindActionButtons() {
+    document.querySelectorAll('.edit-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const row = tableRef.value?.row(button).data();
+        edit(row);
+      });
+    });
+
+    document.querySelectorAll('.remove-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const row = tableRef.value?.row(button).data();
+        remove(row);
+      });
+    });
+  }
+
+  watchEffect(() => {
+    if (tableRef.value) {
+      bindActionButtons();
+    }
+  });
+
+  // ------------------------------------------------------------
+
+
+
+
+  async function remove(user: any, event: Event) {
+    event.stopPropagation(); // Impede a propagação do evento de clique
 
     $fetch("http://localhost:3000/api/professor", {
       method: "DELETE",
@@ -161,10 +232,11 @@
     });
   }
 
-  function edit(user: any) {
-    console.log(user);
+
+  function edit(user: any, event: Event) {
+    event.stopPropagation(); // Impede a propagação do evento de clique
     isEditing.value = true;
-    newUser.value = { ...user };
+    Object.assign(newUser, user); // Atualiza o objeto newUser com os dados do usuário
     editingRowIndex.value = data.findIndex((item: any) => item.id === user.id);
     modalState.value = true;
   }
@@ -172,36 +244,34 @@
 
   async function handleSave() {
     if (isEditing.value) {
-      // Editando um usuário existente
       const response = await $fetch(`http://localhost:3000/api/professor`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newUser.value),
+        body: JSON.stringify(newUser),
       });
 
-      // Atualize a linha específica na tabela
       const row = tableRef.value?.row(editingRowIndex.value);
       if (row) {
         row.data(response).draw(false);
+        Object.assign(data[editingRowIndex.value], response); // Atualiza os dados na variável data
       }
     } else {
-      // Adicionando um novo usuário
       const response = await $fetch("http://localhost:3000/api/professor", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newUser.value),
+        body: JSON.stringify(newUser),
       });
-      console.log(response);
 
       tableRef.value?.row.add(response).draw();
+      data.push(response); // Adiciona o novo usuário aos dados
     }
 
     modalState.value = false;
-    newUser.value = { id: null, nome: '', email: '', celular: '' }; // Reset newUser object
+    Object.assign(newUser, { id: null, nome: '', email: '', celular: '' }); // Reset newUser object
   }
 </script>
 

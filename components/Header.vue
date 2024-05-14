@@ -16,7 +16,7 @@
         <AppearanceSwitch @click="$colorMode.preference = $colorMode.value == 'dark' ? 'light' : 'dark'" />
         <UiDropdownMenu>
           <UiDropdownMenuTrigger as-child>
-            <UiButton class="h-10 w-10 rounded-full" variant="ghost" size="icon">
+            <UiButton id="dropdown-button" class="h-10 w-10 rounded-full" variant="ghost" size="icon">
               <Icon name="fluent:person-12-regular" class="h-5 w-5 " />
             </UiButton>
           </UiDropdownMenuTrigger>
