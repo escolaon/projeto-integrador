@@ -7,20 +7,16 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
   const nome = body.nome;
-  const email = body.email;
-  const celular = body.celular;
   
-  const usuario = await prisma.usuario.update({
+  const turma = await prisma.turma.update({
     where: {
       id: body.id
     },
     data: {
-      email: email,
       nome: nome,
-      celular: celular,
     }
   })
 
 
-  return usuario
+  return turma
 })

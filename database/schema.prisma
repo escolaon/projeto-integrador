@@ -8,19 +8,22 @@ datasource db {
 }
 
 model Usuario {
-  id      Int    @id @default(autoincrement())
-  nome    String
-  email   String @unique
-  senha   String
-  celular String
-  tipo    String
+  id         Int        @id @default(autoincrement())
+  nome       String
+  email      String     @unique
+  senha      String
+  celular    String
+  tipo       String
+  turmas     Turma[]    
+  ocorrencias Ocorrencia[] 
 }
+
 
 model Turma {
   id          Int          @id @default(autoincrement())
   nome        String
   alunos      Aluno[]
-  professores Professor[]
+  professores Usuario[]   
   disciplinas Disciplina[]
   ocorrencias Ocorrencia[]
 }
@@ -38,32 +41,26 @@ model Aluno {
   ocorrencias        Ocorrencia[]
 }
 
-model Professor {
-  id          Int          @id @default(autoincrement())
-  nome        String
-  turmas      Turma[]
-  ocorrencias Ocorrencia[]
-
-  @@map(name: "professores")
-}
-
 model Disciplina {
   id          Int          @id @default(autoincrement())
   nome        String
   turmas      Turma[]
   ocorrencias Ocorrencia[]
-
-  @@map(name: "disciplinas")
 }
 
 model Ocorrencia {
-  id           Int        @id @default(autoincrement())
-  turma        Turma      @relation(fields: [turmaId], references: [id])
-  turmaId      Int
-  aluno        Aluno      @relation(fields: [alunoId], references: [id])
-  alunoId      Int
-  professor    Professor  @relation(fields: [professorId], references: [id])
-  professorId  Int
-  disciplina   Disciplina @relation(fields: [disciplinaId], references: [id])
-  disciplinaId Int
+  id              Int        @id @default(autoincrement())
+  turma           Turma      @relation(fields: [turmaId], references: [id])
+  turmaId         Int
+  turmaNome       String
+  aluno           Aluno      @relation(fields: [alunoId], references: [id])
+  alunoId         Int
+  alunoNome       String
+  professor       Usuario    @relation(fields: [professorId], references: [id])
+  professorId     Int
+  professorNome   String
+  disciplina      Disciplina @relation(fields: [disciplinaId], references: [id])
+  disciplinaId    Int
+  disciplinaNome  String
 }
+
