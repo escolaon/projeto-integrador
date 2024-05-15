@@ -92,14 +92,6 @@
 - Clica em salvar
 - É redirecionado para a lista de alunos
 
-## Cadastro de Responsável
-- Entra na dashboard da escola
-- Clica no menu de responsáveis
-- Clica no botão de adicionar responsável
-- Preenche o formulário com os dados do responsável com Nome, Celular e Alunos
-- Clica em salvar
-- É redirecionado para a lista de responsáveis
-
 ## Cadastro de Ocorrência
 - Entra na dashboard da escola
 - Clica no menu de ocorrências

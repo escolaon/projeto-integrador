@@ -31,12 +31,6 @@ export default defineEventHandler(() => {
       userType: ["coordenador"]
     },
     {
-      _path: "/responsaveis",
-      title: "Responsaveis",
-      icon: "mdi:father",
-      userType: ["coordenador"]
-    },
-    {
       _path: "/ocorrencias",
       title: "Ocorrencias",
       icon: "material-symbols-light:event-list-outline",

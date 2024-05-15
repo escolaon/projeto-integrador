@@ -5,11 +5,11 @@
                 Inicio
             </h3>
             <p class="mt-3 text-muted-foreground">
-                Description
+                Sistema Digital para Controle de Frequência de Alunos
             </p>
         </div>
         <div class="text-sm">
-            Content
+            Univesp - Engenharia da Computação / Ciência de Dados - Projeto Integrador 1 - 01/2024
         </div>
     </div>
 </template>
