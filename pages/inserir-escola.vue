@@ -82,7 +82,7 @@ function onSubmit(event: Event) {
         <div class="grid w-full items-center gap-4">
           <div v-if="verNome" class="flex flex-col space-y-1.5">
             <UiLabel class="sr-only" for="nome"> Nome </UiLabel>
-            <UiInput v-model="nome" id="nome" placeholder="Fulando de Tal" type="text" auto-capitalize="none"
+            <UiInput v-model="nome" id="nome" placeholder="Nome Completo" type="text" auto-capitalize="none"
               auto-complete="name" auto-correct="off" class="h-12" :disabled="carregando" />
           </div>
           <div v-if="verEmail" class="flex flex-col space-y-1.5">
