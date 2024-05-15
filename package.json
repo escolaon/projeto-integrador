@@ -17,7 +17,8 @@
     "dev-sw": "SW=true nuxi@latest dev",
     "start": "nuxi@latest start",
     "docker": "docker build --pull -t pi . && docker run -p 3000:3000 pi",
-    "postinstall": "npm run db"
+    "env": "cp .env.example .env",
+    "postinstall": "npm run db && npm run env"
   },
   "dependencies": {
     "@faker-js/faker": "^8.4.1",
@@ -49,6 +50,7 @@
     "nuxt-icon": "^0.6.10",
     "nuxt-swiper": "^1.2.2",
     "radix-vue": "^1.7.3",
+    "sharp": "^0.33.3",
     "tailwind-variants": "^0.2.1",
     "vaul-vue": "^0.1.0",
     "vue": "^3.4.26",

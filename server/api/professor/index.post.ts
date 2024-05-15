@@ -22,6 +22,9 @@ export default defineEventHandler(async (event: H3Event) => {
       return {
         status: 500,
         body: error,
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
     }
 })
