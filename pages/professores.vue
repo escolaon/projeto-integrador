@@ -12,15 +12,10 @@
                     Todos
                 </UiTabsTrigger>
 
-                <UiTabsTrigger :pill="false" value="Adicionar">
-                    Adicionar
-                </UiTabsTrigger>
-
                 <UiTabsIndicator />
             </UiTabsList>
 
-            <TabTodosProfessor />
-            <TabAdicionarProfessor />
+            <TabProfessoresTodos />
 
         </UiTabs>
     </div>
