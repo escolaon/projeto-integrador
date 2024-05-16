@@ -24,13 +24,11 @@ class wppConnect {
   }
 }
 
-
-
-
 const fs = require("fs");
 import {writeFile} from "fs";
 const wppconnect = require("@wppconnect-team/wppconnect");
-export default defineEventHandler(async (event) => {
+
+export default defineEventHandler(async (event, phoneNumber, message) => {
 
   wppconnect
     .create({
@@ -63,13 +61,13 @@ export default defineEventHandler(async (event) => {
       },
       logQR: false,
     })
-    .then((client) => start(client))
+    .then((client) => start(client, phoneNumber, message))
     .catch((error) => console.log(error));
 
-    async function start(client) {
+    async function start(client, phoneNumber, message) {
       setTimeout(async () => {
         await client
-          .sendText("120363279401499293@g.us", "👋 Hello from wppconnect!")
+          .sendText(phoneNumber, message)
           .then((result) => {
             console.log("Result: ", result);
           })
@@ -77,9 +75,5 @@ export default defineEventHandler(async (event) => {
             console.error("Error when sending: ", erro);
           });
       }, 10000);
-
-      // client.onMessage((message) => {
-      //   console.log(message);
-      // });
     }
 });
