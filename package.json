@@ -13,7 +13,7 @@
     "generate": "npx nuxi@latest generate",
     "build": "npx nuxi@latest build",
     "build-sw": "SW=true nuxi@latest build",
-    "dev": "npx nuxi@latest dev",
+    "dev": "npx nuxi dev --host --tunnel --logLevel silent",
     "dev-sw": "SW=true nuxi@latest dev",
     "start": "npx nuxi@latest start",
     "docker": "docker build --pull -t pi . && docker run -p 3000:3000 pi",

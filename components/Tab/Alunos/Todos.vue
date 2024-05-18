@@ -59,7 +59,8 @@
                 <input id="celular" v-model="newAluno.celular" autocomplete="off" class="alert-input" />
 
                 <UiLabel for="celularResponsavel"> Celular Responsável </UiLabel>
-                <input id="celularResponsavel" v-model="newAluno.celularResponsavel" autocomplete="off" class="alert-input" />
+                <input id="celularResponsavel" v-model="newAluno.celularResponsavel" autocomplete="off"
+                  class="alert-input" />
 
                 <UiLabel for="turma">Turma</UiLabel>
                 <select id="turma" v-model="selectedTurmaId" class="alert-input">
@@ -112,16 +113,16 @@
   const editingRowIndex = ref<number | null>(null);
   const selectedTurmaId = ref('');
 
-const newAluno = reactive({
-  id: null,
-  nome: '',
-  email: '',
-  endereco: '',
-  nomeResponsavel: '',
-  celular: '',
-  celularResponsavel: '',
-  turmaId: '', 
-});
+  const newAluno = reactive({
+    id: null,
+    nome: '',
+    email: '',
+    endereco: '',
+    nomeResponsavel: '',
+    celular: '',
+    celularResponsavel: '',
+    turmaId: '',
+  });
 
   const data = await $fetch<any>("http://localhost:3000/api/aluno");
 
@@ -156,7 +157,7 @@ const newAluno = reactive({
         text: "Novo",
         action: function (e, dt, node, config) {
           isEditing.value = false;
-          Object.assign(newAluno, { id: null, nome: '', email: '', endereco: '', nomeResponsavel: '', celular: '', celularResponsavel: '', turmaId: '' }); 
+          Object.assign(newAluno, { id: null, nome: '', email: '', endereco: '', nomeResponsavel: '', celular: '', celularResponsavel: '', turmaId: '' });
           modalState.value = true;
         },
       }
@@ -236,7 +237,7 @@ const newAluno = reactive({
 
 
   async function remove(user: any, event: Event) {
-    event.stopPropagation(); 
+    event.stopPropagation();
 
     $fetch("http://localhost:3000/api/aluno", {
       method: "DELETE",
@@ -255,7 +256,7 @@ const newAluno = reactive({
 
 
   function edit(user: any, event: Event) {
-    event.stopPropagation(); 
+    event.stopPropagation();
     isEditing.value = true;
     Object.assign(newAluno, user);
     editingRowIndex.value = data.findIndex((item: any) => item.id === user.id);
@@ -276,32 +277,32 @@ const newAluno = reactive({
       const row = tableRef.value?.row(editingRowIndex.value);
       if (row) {
         row.data(response).draw(false);
-        Object.assign(data[editingRowIndex.value], response); 
+        Object.assign(data[editingRowIndex.value], response);
       }
-    } else {      
+    } else {
       const response = await $fetch("http://localhost:3000/api/aluno", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ...newAluno, turmaId: selectedTurmaId.value }),
-    });
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...newAluno, turmaId: selectedTurmaId.value }),
+      });
 
       tableRef.value?.row.add(response).draw();
       data.push(response);
     }
 
     modalState.value = false;
-    Object.assign(newAluno, { id: null, nome: '', email: '', endereco: '', nomeResponsavel: '', celular: '', celularResponsavel: '', turmaId: '' }); 
+    Object.assign(newAluno, { id: null, nome: '', email: '', endereco: '', nomeResponsavel: '', celular: '', celularResponsavel: '', turmaId: '' });
   }
 
-const turmas = ref([]);
+  const turmas = ref([]);
 
-onMounted(async () => {
-  const response = await fetch('http://localhost:3000/api/turmas');
-  const data = await response.json();
-  turmas.value = data;
-});
+  onMounted(async () => {
+    const response = await fetch('http://localhost:3000/api/turmas');
+    const data = await response.json();
+    turmas.value = data;
+  });
 </script>
 
 

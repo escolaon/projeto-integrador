@@ -1,49 +1,60 @@
+// file: ~/pages/entrar.ts
 <script setup lang="ts">
-import { ref } from "vue";
+    import { ref } from "vue";
 
-const { signIn } = useAuth()
-const email = ref("");
-const senha = ref("");
-const verEmail = ref(true);
-const verSenha = ref(false);
-const carregando = ref(false);
+    // Define reactive references
+    const email = ref("");
+    const senha = ref("");
+    const verEmail = ref(true);
+    const verSenha = ref(false);
+    const carregando = ref(false);
 
-definePageMeta({
-    layout: "nonav",
-    auth: {
-        unauthenticatedOnly: true,
-        navigateAuthenticatedTo: '/',
-    },
-})
+    // Use the useAuth composable
+    const { signIn } = useAuth()
 
-const onSubmit = async (event) => {
-    event.preventDefault();
+    // Define page metadata
+    definePageMeta({
+        layout: "nonav",
+        auth: {
+            unauthenticatedOnly: true,
+            navigateAuthenticatedTo: '/',
+        },
+    })
 
-    if (verEmail.value) {
-        if (email.value === "") {
-            console.log("Email não pode ser vazio");
-            return;
-        } else {
-            carregando.value = true;
-            setTimeout(() => {
-                verEmail.value = false;
-                verSenha.value = true;
+    /**
+     * Handles the form submission.
+     * @param {Event} event - The form submission event.
+     */
+    const onSubmit = async (event: Event) => {
+        event.preventDefault();
+
+        if (verEmail.value) {
+            if (email.value.trim() === "") {
+                console.log("Email não pode ser vazio");
+                return;
+            } else {
+                carregando.value = true;
+                setTimeout(() => {
+                    verEmail.value = false;
+                    verSenha.value = true;
+                    carregando.value = false;
+                }, 500);
+            }
+        }
+
+        if (verSenha.value) {
+            if (senha.value.trim() === "") {
+                console.log("Senha não pode ser vazia");
+                return;
+            } else {
+                carregando.value = true;
+                await signIn('credentials', { email: email.value, senha: senha.value });
                 carregando.value = false;
-            }, 500);
+            }
         }
     }
-    if (verSenha.value) {
-        if (senha.value === "") {
-            console.log("Senha não pode ser vazia");
-            return;
-        } else {
-            carregando.value = true;
-            signIn('credentials', { email: email.value, senha: senha.value })
-            carregando.value = false;
-        }
-    }
-}
 </script>
+
 <template>
     <div>
         <div class="flex items-center justify-center">
@@ -60,13 +71,13 @@ const onSubmit = async (event) => {
             <form @submit="onSubmit">
                 <div class="grid w-full items-center gap-4">
                     <div v-if="verEmail" class="flex flex-col space-y-1.5">
-                        <UiLabel class="sr-only" for="email"> Email </UiLabel>
+                        <UiLabel class="sr-only" for="email">Email</UiLabel>
                         <UiInput v-model="email" id="email" placeholder="name@example.com" type="email"
                             auto-capitalize="none" auto-complete="email" auto-correct="off" class="h-12"
                             :disabled="carregando" />
                     </div>
                     <div v-if="verSenha" class="flex flex-col space-y-1.5">
-                        <UiLabel class="sr-only" for="email"> Senha </UiLabel>
+                        <UiLabel class="sr-only" for="senha">Senha</UiLabel>
                         <UiInput v-model="senha" id="senha" placeholder="********" type="password"
                             auto-capitalize="none" auto-complete="password" auto-correct="off" class="h-12"
                             :disabled="carregando" />

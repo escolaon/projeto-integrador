@@ -27,7 +27,7 @@
         </UiDropdownMenu>
       </div>
     </div>
-    <MobileNav v-model="mobileNav" :links="links" />
+    <MobileNav v-model="mobileNav" :pages="pages" />
   </header>
 </template>
 
@@ -41,19 +41,17 @@
 
   const profileMenu = [
     { icon: "fluent:person-12-regular", title: "Perfil", value: "perfil" },
-    { icon: "fluent:settings-16-regular", title: "Configurações", value: "configuracoes" },
     { icon: "fluent:sign-out-20-regular", title: "Sair", value: "sair" },
   ];
 
   const props = defineProps<{
-    links: Link[];
+    pages: Page[];
   }>();
 
-  type Link = {
+  type Page = {
     _path: string;
     title: string;
     icon?: string;
-    children?: Link[];
     label?: string;
   };
 

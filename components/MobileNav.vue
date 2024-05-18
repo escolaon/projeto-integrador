@@ -14,7 +14,7 @@
             </div>
             <UiSeparator class="mt-4" />
           </div>
-          <SideNav :links="links" />
+          <SideNav :pages="pages" />
         </UiScrollArea>
       </template>
     </UiSheetContent>
@@ -23,16 +23,15 @@
 
 <script lang="ts" setup>
 
-  type Link = {
+  type Page = {
     _path: string;
     title: string;
     icon?: string;
-    children?: Link[];
     label?: string;
   };
 
   const props = defineProps<{
-    links: Link[];
+    pages: Page[];
     modelValue?: boolean;
   }>();
 

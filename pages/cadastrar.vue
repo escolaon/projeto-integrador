@@ -1,73 +1,79 @@
+// file: ~/pages/cadastrar.ts
 <script setup lang="ts">
-import { ref } from "vue";
+  import { ref } from "vue";
 
-definePageMeta({
-  layout: "nonav",
-  auth: {
-    unauthenticatedOnly: true,
-    navigateAuthenticatedTo: '/',
-  },
-});
+  // Define page metadata
+  definePageMeta({
+    layout: "nonav",
+    auth: {
+      unauthenticatedOnly: true,
+      navigateAuthenticatedTo: '/',
+    },
+  });
 
-const nome = ref("");
-const email = ref("");
-const senha = ref("");
-const verNome = ref(true);
-const verEmail = ref(false);
-const verSenha = ref(false);
-const carregando = ref(false);
+  // Reactive references
+  const nome = ref("");
+  const email = ref("");
+  const senha = ref("");
+  const verNome = ref(true);
+  const verEmail = ref(false);
+  const verSenha = ref(false);
+  const carregando = ref(false);
 
-function onSubmit(event: Event) {
-  event.preventDefault();
+  /**
+   * Handles the form submission.
+   * @param {Event} event - The form submission event.
+   */
+  function onSubmit(event: Event) {
+    event.preventDefault();
 
-  if (verNome.value) {
-    if (nome.value === "") {
-      console.log("Nome não pode ser vazio");
-      return;
-    } else {
-      carregando.value = true;
-      setTimeout(() => {
-        verNome.value = false;
-        verEmail.value = true;
-        carregando.value = false;
-      }, 500);
+    if (verNome.value) {
+      if (nome.value.trim() === "") {
+        console.log("Nome não pode ser vazio");
+        return;
+      } else {
+        carregando.value = true;
+        setTimeout(() => {
+          verNome.value = false;
+          verEmail.value = true;
+          carregando.value = false;
+        }, 500);
+      }
+    }
+
+    if (verEmail.value) {
+      if (email.value.trim() === "") {
+        console.log("Email não pode ser vazio");
+        return;
+      } else {
+        carregando.value = true;
+        setTimeout(() => {
+          verEmail.value = false;
+          verSenha.value = true;
+          carregando.value = false;
+        }, 500);
+      }
+    }
+
+    if (verSenha.value) {
+      if (senha.value.trim() === "") {
+        console.log("Senha não pode ser vazia");
+        return;
+      } else {
+        carregando.value = true;
+        useFetch('/api/register', {
+          method: 'POST',
+          body: {
+            nome: nome.value,
+            email: email.value,
+            senha: senha.value
+          },
+        }).then(() => navigateTo("/"));
+      }
     }
   }
-  if (verEmail.value) {
-    if (email.value === "") {
-      console.log("Email não pode ser vazio");
-      return;
-    } else {
-      carregando.value = true;
-      setTimeout(() => {
-        verEmail.value = false;
-        verSenha.value = true;
-        carregando.value = false;
-      }, 500);
-    }
-  }
-  if (verSenha.value) {
-    if (senha.value === "") {
-      console.log("Senha não pode ser vazia");
-      return;
-    } else {
-      carregando.value = true;
-
-      const { data } = useFetch('/api/cadastrar', {
-        method: 'POST',
-        body: {
-          nome: nome.value,
-          email: email.value,
-          senha: senha.value,
-          celular: '',
-        },
-      });
-
-      navigateTo("/");
-    }
-  }
-}
 </script>
+
 <template>
   <div>
     <div class="flex items-center justify-center">
@@ -76,7 +82,7 @@ function onSubmit(event: Event) {
     <UiCardHeader class="flex flex-col space-y-4 text-center">
       <UiCardTitle class="text-2xl">Faça seu Cadastro</UiCardTitle>
       <UiCardDescription>
-        <p v-if='verNome'>Digite seu nome para começarmos.</p>
+        <p v-if="verNome">Digite seu nome para começarmos.</p>
         <p v-if="verEmail">Digite seu email para continuar.</p>
         <p v-if="verSenha">Digite sua senha para Cadastrar.</p>
       </UiCardDescription>
@@ -95,7 +101,7 @@ function onSubmit(event: Event) {
               auto-complete="email" auto-correct="off" class="h-12" :disabled="carregando" />
           </div>
           <div v-if="verSenha" class="flex flex-col space-y-1.5">
-            <UiLabel class="sr-only" for="email"> Senha </UiLabel>
+            <UiLabel class="sr-only" for="senha"> Senha </UiLabel>
             <UiInput v-model="senha" id="senha" placeholder="********" type="password" auto-capitalize="none"
               auto-complete="password" auto-correct="off" class="h-12" :disabled="carregando" />
           </div>
@@ -108,7 +114,7 @@ function onSubmit(event: Event) {
         </div>
       </form>
     </UiCardContent>
-    <UiCardFooter class="text-center text-sm text-muted-foreground flex-none grid">
+    <UiCardFooter class="text-center text-sm text-muted-foreground">
       <p class="w-full">
         <NuxtLink to="/entrar" class="underline underline-offset-4 hover:text-primary">
           Já tenho conta!

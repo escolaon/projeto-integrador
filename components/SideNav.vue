@@ -1,6 +1,6 @@
 <template>
     <nav :class="styles({ class: props.class })">
-        <template v-for="(l, i) in links" :key="i">
+        <template v-for="(l, i) in pages" :key="i">
             <NuxtLink
                 class="h-10 rounded-md ps-3 flex items-center line-clamp-1 shrink-0 text-ellipsis text-base text-muted-foreground  hover:font-bold sm:text-sm"
                 exact-active-class="text-primary font-bold bg-muted" :to="l._path" :title="l.title">
@@ -19,16 +19,15 @@
         tv
     } from "tailwind-variants";
 
-    type Link = {
+    type Page = {
         _path: string;
         title: string;
         icon?: string;
-        children?: Link[];
         label?: string;
     };
 
     const props = defineProps<{
-        links: Link[];
+        pages: Page[];
         class?: any;
     }>();
 
