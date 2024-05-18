@@ -76,7 +76,7 @@ export default defineEventHandler(async (event) => {
   }
 
   // Adiciona a ocorrência à notificação existente ou nova
-  await prisma.ocorrencia.create({
+  const ocorrencia = await prisma.ocorrencia.create({
     data: {
       turmaId: turmaId,
       turmaNome: turmaNome,
@@ -89,5 +89,5 @@ export default defineEventHandler(async (event) => {
     }
   });
 
-  return { success: true };
+  return ocorrencia;
 });
