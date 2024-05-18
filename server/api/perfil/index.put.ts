@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client"
+import { hash } from 'bcrypt';
 
 const prisma = new PrismaClient()
 
@@ -8,15 +9,12 @@ export default defineEventHandler(async (event) => {
 
   const nome = body.nome;
   const email = body.email;
-  const endereco = body.endereco;
-  const nomeResponsavel = body.nomeResponsavel;
   const celular = body.celular;
-  const celularResponsavel = body.celularResponsavel;
-  const turmaId = body.turmaId;
+  const senha = body.senha;
 
-  console.log(body)
+  const hashedPassword = await hash(senha, 10);
   
-  const aluno = await prisma.aluno.update({
+  const usuario = await prisma.usuario.update({
     where: {
       id: body.id
     },
@@ -24,13 +22,11 @@ export default defineEventHandler(async (event) => {
       email: email,
       nome: nome,
       celular: celular,
-      endereco: endereco,
-      nomeResponsavel: nomeResponsavel,
-      celularResponsavel: celularResponsavel,
-      turmaId: turmaId
+      senha: hashedPassword
     }
   })
-
-
-  return aluno
+  return {
+    statusCode: 200,
+    body: JSON.stringify(usuario)
+  }
 })

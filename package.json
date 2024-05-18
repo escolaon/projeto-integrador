@@ -8,7 +8,7 @@
     "db:migrate": "npx prisma migrate dev --name init",
     "db:seed": "npx prisma db seed",
     "db:studio": "npx prisma studio",
-    "db": "npm run db:generate && npm run db:migrate && npm run db:seed",
+    "db": "npm run db:delete && npm run db:generate && npm run db:migrate",
     "prepare": "npx nuxi@latest prepare",
     "generate": "npx nuxi@latest generate",
     "build": "npx nuxi@latest build",

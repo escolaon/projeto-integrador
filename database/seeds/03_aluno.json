@@ -1,0 +1,74 @@
+[
+    {
+        "id": 1,
+        "nome": "Carlos Silva",
+        "email": "carlos.silva@example.com",
+        "endereco": "Rua das Flores, 123",
+        "celularResponsavel": "5519974057577",
+        "nomeResponsavel": "João da Silva",
+        "turmaId": 1
+    },
+    {
+        "id": 2,
+        "nome": "Maria Souza",
+        "email": "maria.souza@example.com",
+        "endereco": "Rua Vinte e Quatro de Maio, 43",
+        "celularResponsavel": "5519974057577",
+        "nomeResponsavel": "Marcos Souza",
+        "turmaId": 1
+    },
+    {
+        "id": 3,
+        "nome": "João Pereira",
+        "email": "joao.pereira@example.com",
+        "endereco": "Rua de São João, 29",
+        "celularResponsavel": "5519974057577",
+        "nomeResponsavel": "José Pereira",
+        "turmaId": 1
+    },
+    {
+        "id": 4,
+        "nome": "Ana Santos",
+        "email": "ana.santos@example.com",
+        "endereco": "Avenida Paulista, 127",
+        "celularResponsavel": "5519974057577",
+        "nomeResponsavel": "Maria Santos",
+        "turmaId": 1
+    },
+    {
+        "id": 5,
+        "nome": "Paulo Oliveira",
+        "email": "paulo.oliveira@example.com",
+        "endereco": "Rua da Floresta, 1276",
+        "celularResponsavel": "5519974057577",
+        "nomeResponsavel": "Fernanda Oliveira",
+        "turmaId": 2
+    },
+    {
+        "id": 6,
+        "nome": "Lucas Lima",
+        "email": "lucas.lima@example.com",
+        "endereco": "Rua Cerro, 123",
+        "celularResponsavel": "5519974057577",
+        "nomeResponsavel": "Carlos Lima",
+        "turmaId": 2
+    },
+    {
+        "id": 7,
+        "nome": "Mariana Gomes",
+        "email": "mariana.gomes@example.com",
+        "endereco": "Rua das Flores, 123",
+        "celularResponsavel": "5519974057577",
+        "nomeResponsavel": "Ana Gomes",
+        "turmaId": 2
+    },
+    {
+        "id": 8,
+        "nome": "Francisco da Silva",
+        "email": "francisco.da.silva@example.com",
+        "endereco": "Rua Marques, 123",
+        "celularResponsavel": "5519974057577",
+        "nomeResponsavel": "Ana da Silva",
+        "turmaId": 2
+    }
+]

@@ -55,9 +55,6 @@
                 <UiLabel for="nomeResponsavel" class=""> Nome Responsável </UiLabel>
                 <input id="nomeResponsavel" v-model="newAluno.nomeResponsavel" autocomplete="off" class="alert-input" />
 
-                <UiLabel for="celular"> Celular </UiLabel>
-                <input id="celular" v-model="newAluno.celular" autocomplete="off" class="alert-input" />
-
                 <UiLabel for="celularResponsavel"> Celular Responsável </UiLabel>
                 <input id="celularResponsavel" v-model="newAluno.celularResponsavel" autocomplete="off"
                   class="alert-input" />
@@ -119,7 +116,6 @@
     email: '',
     endereco: '',
     nomeResponsavel: '',
-    celular: '',
     celularResponsavel: '',
     turmaId: '',
   });
@@ -167,10 +163,8 @@
     { data: "id", title: "Id" },
     { data: "nome", title: "Nome" },
     { data: "email", title: "Email" },
-    { data: "celularResponsavel", title: "Celular Responsável" },
     { data: "nomeResponsavel", title: "Nome Responsável" },
     { data: "celularResponsavel", title: "Celular Responsável" },
-
     {
       data: null,
       title: "",
@@ -293,7 +287,7 @@
     }
 
     modalState.value = false;
-    Object.assign(newAluno, { id: null, nome: '', email: '', endereco: '', nomeResponsavel: '', celular: '', celularResponsavel: '', turmaId: '' });
+    Object.assign(newAluno, { id: null, nome: '', email: '', endereco: '', nomeResponsavel: '', celularResponsavel: '', turmaId: '' });
   }
 
   const turmas = ref([]);

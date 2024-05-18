@@ -21,7 +21,6 @@ CREATE TABLE "Aluno" (
     "email" TEXT NOT NULL,
     "endereco" TEXT NOT NULL,
     "nomeResponsavel" TEXT NOT NULL,
-    "celular" TEXT NOT NULL,
     "celularResponsavel" TEXT NOT NULL,
     "turmaId" INTEGER NOT NULL,
     CONSTRAINT "Aluno_turmaId_fkey" FOREIGN KEY ("turmaId") REFERENCES "Turma" ("id") ON DELETE RESTRICT ON UPDATE CASCADE

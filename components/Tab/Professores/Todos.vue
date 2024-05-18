@@ -191,14 +191,14 @@
     document.querySelectorAll('.edit-btn').forEach(button => {
       button.addEventListener('click', () => {
         const row = tableRef.value?.row(button).data();
-        edit(row);
+        edit(row, event);
       });
     });
 
     document.querySelectorAll('.remove-btn').forEach(button => {
       button.addEventListener('click', () => {
         const row = tableRef.value?.row(button).data();
-        remove(row);
+        remove(row, event);
       });
     });
   }

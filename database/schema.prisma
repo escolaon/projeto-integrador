@@ -8,22 +8,21 @@ datasource db {
 }
 
 model Usuario {
-  id         Int        @id @default(autoincrement())
-  nome       String
-  email      String     @unique
-  senha      String
-  celular    String
-  tipo       String
-  turmas     Turma[]    
-  ocorrencias Ocorrencia[] 
+  id          Int          @id @default(autoincrement())
+  nome        String
+  email       String       @unique
+  senha       String
+  celular     String
+  tipo        String
+  turmas      Turma[]
+  ocorrencias Ocorrencia[]
 }
-
 
 model Turma {
   id          Int          @id @default(autoincrement())
   nome        String
   alunos      Aluno[]
-  professores Usuario[]   
+  professores Usuario[]
   disciplinas Disciplina[]
   ocorrencias Ocorrencia[]
 }
@@ -34,7 +33,6 @@ model Aluno {
   email              String
   endereco           String
   nomeResponsavel    String
-  celular            String
   celularResponsavel String
   turma              Turma        @relation(fields: [turmaId], references: [id])
   turmaId            Int
@@ -49,18 +47,17 @@ model Disciplina {
 }
 
 model Ocorrencia {
-  id              Int        @id @default(autoincrement())
-  turma           Turma      @relation(fields: [turmaId], references: [id])
-  turmaId         Int
-  turmaNome       String
-  aluno           Aluno      @relation(fields: [alunoId], references: [id])
-  alunoId         Int
-  alunoNome       String
-  professor       Usuario    @relation(fields: [professorId], references: [id])
-  professorId     Int
-  professorNome   String
-  disciplina      Disciplina @relation(fields: [disciplinaId], references: [id])
-  disciplinaId    Int
-  disciplinaNome  String
+  id             Int        @id @default(autoincrement())
+  turma          Turma      @relation(fields: [turmaId], references: [id])
+  turmaId        Int
+  turmaNome      String
+  aluno          Aluno      @relation(fields: [alunoId], references: [id])
+  alunoId        Int
+  alunoNome      String
+  professor      Usuario    @relation(fields: [professorId], references: [id])
+  professorId    Int
+  professorNome  String
+  disciplina     Disciplina @relation(fields: [disciplinaId], references: [id])
+  disciplinaId   Int
+  disciplinaNome String
 }
-

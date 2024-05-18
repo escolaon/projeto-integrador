@@ -47,20 +47,24 @@
                                     <input id="nomeResponsavel" v-model="newAluno.nomeResponsavel" autocomplete="off"
                                         class="alert-input" />
 
-                                    <UiLabel for="celular">Celular</UiLabel>
-                                    <input id="celular" v-model="newAluno.celular" autocomplete="off"
-                                        class="alert-input" />
-
                                     <UiLabel for="celularResponsavel">Celular Responsável</UiLabel>
                                     <input id="celularResponsavel" v-model="newAluno.celularResponsavel"
                                         autocomplete="off" class="alert-input" />
 
                                     <UiLabel for="turma">Turma</UiLabel>
-                                    <select id="turma" v-model="selectedTurmaId" class="alert-input">
-                                        <option v-for="turma in turmas" :key="turma.id" :value="turma.id">{{ turma.nome
-                                            }}
-                                        </option>
-                                    </select>
+                                    <UiSelect>
+                                        <UiSelectTrigger>
+                                            <UiSelectValue
+                                                :placeholder="newAluno.turmaId ? newAluno.turmaId : 'Selecione'">
+                                                {{ newAluno.turmaId ? newAluno.turmaId : 'Selecione' }}
+                                            </UiSelectValue>
+                                        </UiSelectTrigger>
+                                        <UiSelectContent position="popper">
+                                            <UiSelectItem v-for="turma in turmas" :value="turma.id">
+                                                {{ turma.nome }}
+                                            </UiSelectItem>
+                                        </UiSelectContent>
+                                    </UiSelect>
                                 </div>
                             </div>
                         </form>
@@ -96,7 +100,6 @@
         AlertDialogPortal,
         AlertDialogRoot,
         AlertDialogTitle,
-        AlertDialogTrigger,
     } from 'radix-vue';
 
     const selectedRows = ref(0);
@@ -111,7 +114,6 @@
         email: '',
         endereco: '',
         nomeResponsavel: '',
-        celular: '',
         celularResponsavel: '',
         turmaId: '',
     });
@@ -154,7 +156,6 @@
                         email: '',
                         endereco: '',
                         nomeResponsavel: '',
-                        celular: '',
                         celularResponsavel: '',
                         turmaId: '',
                     });
@@ -166,9 +167,9 @@
 
     const columns: ConfigColumns[] = [
         { data: 'id', title: 'Id' },
+        { data: 'turmaNome', title: 'Turma' },
         { data: 'nome', title: 'Nome' },
         { data: 'email', title: 'Email' },
-        { data: 'celularResponsavel', title: 'Celular Responsável' },
         { data: 'nomeResponsavel', title: 'Nome Responsável' },
         { data: 'celularResponsavel', title: 'Celular Responsável' },
         {
@@ -240,7 +241,6 @@
             email: '',
             endereco: '',
             nomeResponsavel: '',
-            celular: '',
             celularResponsavel: '',
             turmaId: '',
         });
@@ -290,6 +290,7 @@
         const response = await fetch('http://localhost:3000/api/turmas');
         const data = await response.json();
         turmas.value = data;
+        console.log(data);
     });
 </script>
 
