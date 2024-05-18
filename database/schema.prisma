@@ -16,6 +16,7 @@ model Usuario {
   tipo        String
   turmas      Turma[]
   ocorrencias Ocorrencia[]
+  Disciplina  Disciplina[]
 }
 
 model Turma {
@@ -23,7 +24,6 @@ model Turma {
   nome        String
   alunos      Aluno[]
   professores Usuario[]
-  disciplinas Disciplina[]
   ocorrencias Ocorrencia[]
 }
 
@@ -40,24 +40,34 @@ model Aluno {
 }
 
 model Disciplina {
-  id          Int          @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   nome        String
-  turmas      Turma[]
-  ocorrencias Ocorrencia[]
+  professor   Usuario @relation(fields: [professorId], references: [id])
+  professorId Int
 }
 
 model Ocorrencia {
-  id             Int        @id @default(autoincrement())
-  turma          Turma      @relation(fields: [turmaId], references: [id])
+  id             Int          @id @default(autoincrement())
+  turma          Turma        @relation(fields: [turmaId], references: [id])
   turmaId        Int
   turmaNome      String
-  aluno          Aluno      @relation(fields: [alunoId], references: [id])
+  aluno          Aluno        @relation(fields: [alunoId], references: [id])
   alunoId        Int
   alunoNome      String
-  professor      Usuario    @relation(fields: [professorId], references: [id])
+  professor      Usuario      @relation(fields: [professorId], references: [id])
   professorId    Int
   professorNome  String
-  disciplina     Disciplina @relation(fields: [disciplinaId], references: [id])
-  disciplinaId   Int
   disciplinaNome String
+  notificacao    Notificacao? @relation(fields: [notificacaoId], references: [id])
+  notificacaoId  Int?
+}
+
+model Notificacao {
+  id          Int          @id @default(autoincrement())
+  celular     String
+  mensagem    String
+  status      String       @default("pendente")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  ocorrencias Ocorrencia[]
 }

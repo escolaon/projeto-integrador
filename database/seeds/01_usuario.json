@@ -1,5 +1,6 @@
 [
     {
+        "id": 1,
         "nome": "Mauricio Faria Bellon",
         "email": "mauriciobellon@gmail.com",
         "senha": "$2b$10$PmI51SqJpTJ4stgWqPZIyefKyeIckhIixW2QQmzDBG5L464jNYnKa",
@@ -7,6 +8,7 @@
         "tipo": "admin"
     },
     {
+        "id": 2,
         "nome": "João da Silva",
         "email": "joao@escola.com",
         "senha": "$2b$10$PmI51SqJpTJ4stgWqPZIyefKyeIckhIixW2QQmzDBG5L464jNYnKa",
@@ -14,6 +16,7 @@
         "tipo": "coordenador"
     },
     {
+        "id": 3,
         "nome": "Carlos da Silva",
         "email": "carlos@escola.com",
         "senha": "$2b$10$PmI51SqJpTJ4stgWqPZIyefKyeIckhIixW2QQmzDBG5L464jNYnKa",
@@ -21,6 +24,7 @@
         "tipo": "professor"
     },
     {
+        "id": 4,
         "nome": "Rafael Costa",
         "email": "rafael@escola.com",
         "senha": "$2b$10$PmI51SqJpTJ4stgWqPZIyefKyeIckhIixW2QQmzDBG5L464jNYnKa",
@@ -28,6 +32,7 @@
         "tipo": "professor"
     },
     {
+        "id": 5,
         "nome": "Maria da Silva",
         "email": "maria@escola.com",
         "senha": "$2b$10$PmI51SqJpTJ4stgWqPZIyefKyeIckhIixW2QQmzDBG5L464jNYnKa",

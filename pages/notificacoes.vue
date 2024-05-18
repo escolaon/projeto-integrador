@@ -1,33 +1,25 @@
 <template>
+    <div>
+        <div class="mt-6 mb-6">
+            <h3 class="text-2xl font-semibold">
+                Notificações
+            </h3>
+        </div>
+        <UiTabs default-value="Pendentes">
+            <UiTabsList :pill="false" class="relative grid grid-flow-col auto-cols-auto border-b justify-start">
 
-    <UiAlertDialog v-model:open="model">
-        <UiAlertDialogTrigger as-child>
-            <UiButton variant="outline">Show Dialog</UiButton>
-        </UiAlertDialogTrigger>
-        <UiAlertDialogContent @escape-key-down="showMessage('Escape key pressed')">
-            <UiAlertDialogHeader>
-                <UiAlertDialogTitle>Are you absolutely sure?</UiAlertDialogTitle>
-                <UiAlertDialogDescription>
-                    This action cannot be undone. This will permanently delete your account and remove your
-                    data from our servers.
-                </UiAlertDialogDescription>
-            </UiAlertDialogHeader>
-            <UiAlertDialogFooter>
-                <UiAlertDialogCancel @click="showMessage('Action cancelled')" />
-                <UiAlertDialogAction @click="showMessage('Action confirmed!')" />
-            </UiAlertDialogFooter>
-        </UiAlertDialogContent>
-    </UiAlertDialog>
+                <UiTabsTrigger :pill="false" value="Pendentes">
+                    Pendentes
+                </UiTabsTrigger>
+                <UiTabsTrigger :pill="false" value="Enviadas">
+                    Enviadas
+                </UiTabsTrigger>
 
+                <UiTabsIndicator />
+            </UiTabsList>
+
+            <TabNotificacoesPendentes />
+            <TabNotificacoesEnviadas />
+        </UiTabs>
+    </div>
 </template>
-
-<script lang="ts" setup>
-    definePageMeta({ middleware: 'auth' })
-
-
-    const showMessage = (message: string) => {
-        useSonner(message);
-    };
-    const model = ref(false);
-
-</script>

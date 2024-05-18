@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "nome": "Matemática",
+        "professorId": 3
+    },
+    {
+        "id": 2,
+        "nome": "Português",
+        "professorId": 4
+    },
+    {
+        "id": 3,
+        "nome": "Geografia",
+        "professorId": 5
+    }
+]

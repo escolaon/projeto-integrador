@@ -167,7 +167,7 @@
 
     const columns: ConfigColumns[] = [
         { data: 'id', title: 'Id' },
-        { data: 'turmaNome', title: 'Turma' },
+        { data: 'turmaId', title: 'Turma' },
         { data: 'nome', title: 'Nome' },
         { data: 'email', title: 'Email' },
         { data: 'nomeResponsavel', title: 'Nome Responsável' },
