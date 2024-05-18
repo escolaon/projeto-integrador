@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 const description = "Escola ON - Sistema de Gestão Escolar";
 const lang = "pt";
 const title = "Escola ON";
@@ -6,7 +5,10 @@ const themeColor = "#111827";
 const url = process.env.PUBLIC_URL;
 
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  // Devtools configuration
+  devtools: { enabled: false },
+
+  // Vite configuration for optimizing dependencies
   vite: {
     optimizeDeps: {
       include: [
@@ -20,6 +22,8 @@ export default defineNuxtConfig({
       ],
     },
   },
+
+  // Modules to be included in the project
   modules: [
     "@sidebase/nuxt-auth",
     "@nuxtjs/tailwindcss",
@@ -28,7 +32,6 @@ export default defineNuxtConfig({
     "nuxt-icon",
     "@samk-dev/nuxt-vcalendar",
     "@morev/vue-transitions/nuxt",
-    "@sidebase/nuxt-auth",
     "radix-vue/nuxt",
     "@vee-validate/nuxt",
     "@nuxt/content",
@@ -38,20 +41,26 @@ export default defineNuxtConfig({
     "nuxt-swiper",
   ],
 
+  // TailwindCSS configuration
   tailwindcss: {
     exposeConfig: true,
     viewer: true,
   },
+
+  // Auth configuration
   auth: {
     globalAppMiddleware: true,
     provider: {
       type: "authjs",
     },
   },
+
+  // Color mode configuration
   colorMode: {
     classSuffix: "",
   },
 
+  // TypeScript configuration
   typescript: {
     shim: false,
     tsConfig: {
@@ -60,6 +69,8 @@ export default defineNuxtConfig({
       },
     },
   },
+
+  // v-calendar configuration
   vcalendar: {
     calendarOptions: {
       masks: {
@@ -68,6 +79,7 @@ export default defineNuxtConfig({
     },
   },
 
+  // Imports configuration
   imports: {
     imports: [
       {
@@ -87,6 +99,7 @@ export default defineNuxtConfig({
     ],
   },
 
+  // Application configuration
   app: {
     pageTransition: { name: "fade", mode: "out-in" },
     layoutTransition: { name: "fade", mode: "out-in" },
@@ -94,16 +107,13 @@ export default defineNuxtConfig({
       title,
       titleTemplate: "EscolaON",
       script: [
-        // Add pdfmake scripts for DataTables.net export buttons
         { src: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.9/pdfmake.min.js", defer: true },
-        {
-          src: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.9/vfs_fonts.min.js",
-          defer: true,
-        },
+        { src: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.9/vfs_fonts.min.js", defer: true },
       ],
     },
   },
 
+  // PWA configuration
   pwa: {
     meta: {
       description,
@@ -115,9 +125,11 @@ export default defineNuxtConfig({
       ogType: "website",
       ogUrl: url,
       theme_color: themeColor,
-      title
+      title,
     },
   },
+
+  // Site configuration
   site: {
     url,
     name: title,
@@ -127,23 +139,28 @@ export default defineNuxtConfig({
     indexable: true,
     ogImage: "/icon.png",
   },
+
+  // Sitemap configuration
   sitemap: { autoLastmod: true },
+
+  // OG image configuration
   ogImage: {
     defaults: {
       alt: title,
     },
   },
 
+  // Build configuration
   build: {
     transpile: ["vue-sonner"],
   },
 
-
+  // Future and experimental configurations
   future: {
     typescriptBundlerResolution: true,
   },
   experimental: {
     payloadExtraction: true,
-    watcher: 'chokidar-granular'
+    watcher: "chokidar-granular",
   },
 });

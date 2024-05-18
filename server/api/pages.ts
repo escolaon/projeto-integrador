@@ -1,5 +1,14 @@
+import { defineEventHandler } from 'h3';
+
+interface Page {
+  _path: string;
+  title: string;
+  icon: string;
+  userType: string[];
+}
+
 export default defineEventHandler(() => {
-  const pages = [
+  const pages: Page[] = [
     {
       _path: "/inicio",
       title: "Inicio",
