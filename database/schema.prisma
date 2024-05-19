@@ -64,6 +64,8 @@ model Ocorrencia {
 
 model Notificacao {
   id          Int          @id @default(autoincrement())
+  turmaNome   String
+  alunoNome   String
   celular     String
   mensagem    String
   status      String       @default("pendente")

@@ -58,6 +58,8 @@ export default defineEventHandler(async (event) => {
     notificacao = await prisma.notificacao.create({
       data: {
         celular: aluno.celularResponsavel,
+        alunoNome: aluno.nome,
+        turmaNome: turma.nome,
         mensagem: mensagem,
         status: 'pendente',
         ocorrencias: {

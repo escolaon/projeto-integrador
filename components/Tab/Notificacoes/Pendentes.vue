@@ -1,30 +1,18 @@
 <template>
   <UiTabsContent value="Pendentes" class="mt-4">
-    <UiDatatable :options="options" :columns="columns" :data="data">
+    <UiDatatable @ready="initializeTable" :options="options" :columns="columns" :data="data">
     </UiDatatable>
   </UiTabsContent>
 </template>
 
 <script lang="ts" setup>
-  import { ref, shallowRef, watch, reactive, onMounted } from 'vue';
+  import { shallowRef, watch } from 'vue';
   import type DataTableRef from 'datatables.net';
   import type { Config, ConfigColumns } from 'datatables.net';
   import languageBR from 'datatables.net-plugins/i18n/pt-BR.mjs';
 
-
-  const selectedRows = ref(0);
-  const isEditing = ref(false);
-  const modalState = ref(false);
-  const editingRowIndex = ref<number | null>(null);
-
-  const newTurma = reactive({
-    id: null,
-    nome: '',
-  });
-
-  const data = await $fetch<any>("http://localhost:3000/api/turmas");
-
   const tableRef = shallowRef<InstanceType<typeof DataTableRef<any[]>> | null>(null);
+  const selectedRows = ref(0);
 
   const options: Config = {
 
@@ -40,62 +28,87 @@
     },
     buttons: [
       {
-        text: "Enviar",
+        text: (selectedRows.value > 0 ? "Desselecionar" : "Selecionar Todos"),
         action: function (e, dt, node, config) {
-          isEditing.value = false;
-          Object.assign(newTurma, { id: null, nome: '' });
-          modalState.value = true;
+          if (selectedRows.value > 0) {
+            dt.rows().deselect();
+            selectedRows.value = 0;
+          } else {
+            dt.rows().select();
+            selectedRows.value = dt.rows({ selected: true }).count();
+          }
+        },
+      },
+      {
+        text: "Enviar",
+        action: async function (e, dt, node, config) {
+          const selectedRows = dt.rows({ selected: true }).data();
+          if (selectedRows.length > 0) {
+            const rows = selectedRows.map((item: any) => item.id);
+            for (let i = 0; i < rows.length; i++) {
+              const id = rows[i];
+              await $fetch(`http://localhost:3000/api/notificacao`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ id }),
+              });
+            }
+          }
+          dt.rows({ selected: true }).remove().draw(false);
         },
       }
     ],
   };
+
+  const dataFetched = await $fetch<any>("http://localhost:3000/api/notificacao/pendente");
+  let data: any[] = [];
+  if (dataFetched) {
+    data = dataFetched.map((item: any) => {
+      return {
+        id: item.id,
+        createdAt: new Date(item.createdAt).toLocaleDateString("pt-BR"),
+        turmaNome: item.turmaNome,
+        alunoNome: item.alunoNome,
+        celular: item.celular,
+        mensagem: item.mensagem,
+      };
+    });
+  }
   const columns: ConfigColumns[] = [
     { data: "id", title: "Id" },
-    { data: "nome", title: "Nome" }
+    { data: "createdAt", title: "Data" },
+    { data: "turmaNome", title: "Turma" },
+    { data: "alunoNome", title: "Aluno" },
+    { data: "celular", title: "Celular" },
+    { data: "mensagem", title: "Mensagem" },
   ];
 
 
-  async function handleSave() {
-    if (isEditing.value) {
-      const response = await $fetch(`http://localhost:3000/api/turmas`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newTurma),
-      });
+  // --Change state of Select Button  ---------------------------
 
-      const row = tableRef.value?.row(editingRowIndex.value);
-      if (row) {
-        row.data(response).draw(false);
-        Object.assign(data[editingRowIndex.value], response);
-      }
-    } else {
-      const response = await $fetch("http://localhost:3000/api/turmas", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ nome: newTurma.nome }),
-      });
-
-      tableRef.value?.row.add(response).draw();
-      data.push(response);
+  watch(selectedRows, (newValue) => {
+    const selectButton = tableRef.value?.button(0);
+    if (selectButton) {
+      selectButton.text(newValue > 0 ? 'Selecionar Nenhum' : 'Selecionar Todos');
     }
+  });
 
-    modalState.value = false;
-    Object.assign(newTurma, { id: null, nome: '' });
+  function initializeTable(instance: any) {
+    tableRef.value = instance;
+    tableRef.value?.on('select.dt deselect.dt', updateSelectedRowsCount);
   }
 
-  const turmas = ref([]);
 
-  onMounted(async () => {
-    const response = await fetch('http://localhost:3000/api/turmas');
-    const data = await response.json();
-    turmas.value = data;
-  });
+  function updateSelectedRowsCount() {
+    selectedRows.value = tableRef.value?.rows({ selected: true }).count() || 0;
+  }
+  // ------------------------------------------------------------
+
+
+
 </script>
-
 
 <style scoped>
   .alert-input {

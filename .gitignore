@@ -88,7 +88,7 @@ logs
 sw.*
 
 ._*
-.tokens
+.token
 /database/database.db
 /database/00_schema.sql
 /database/database.db-journal
