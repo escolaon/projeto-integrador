@@ -47,7 +47,7 @@ export default defineEventHandler(async (event) => {
         email,
         senha: hashedPassword,
         celular: "",
-        tipo: "coordenador"
+        tipo: "admin"
       },
     });
 

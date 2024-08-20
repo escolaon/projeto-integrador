@@ -3,7 +3,7 @@
         "id": 1,
         "nome": "Mauricio Faria Bellon",
         "email": "mauriciobellon@gmail.com",
-        "senha": "$2b$10$PmI51SqJpTJ4stgWqPZIyefKyeIckhIixW2QQmzDBG5L464jNYnKa",
+        "senha": "123456",
         "celular": "5519974057577",
         "tipo": "admin"
     },

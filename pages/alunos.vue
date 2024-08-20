@@ -52,19 +52,11 @@
                                         autocomplete="off" class="alert-input" />
 
                                     <UiLabel for="turma">Turma</UiLabel>
-                                    <UiSelect>
-                                        <UiSelectTrigger>
-                                            <UiSelectValue
-                                                :placeholder="newAluno.turmaId ? newAluno.turmaId : 'Selecione'">
-                                                {{ newAluno.turmaId ? newAluno.turmaId : 'Selecione' }}
-                                            </UiSelectValue>
-                                        </UiSelectTrigger>
-                                        <UiSelectContent position="popper">
-                                            <UiSelectItem v-for="turma in turmas" :value="turma.id">
-                                                {{ turma.nome }}
-                                            </UiSelectItem>
-                                        </UiSelectContent>
-                                    </UiSelect>
+                                    <select id="turma" v-model="selectedTurmaId" @change="updateSelectedTurmaName"
+                                        class="alert-input">
+                                        <option v-for="turma in turmas" :key="turma.id" :value="turma.id">{{
+                                            turma.nome }}</option>
+                                    </select>
                                 </div>
                             </div>
                         </form>

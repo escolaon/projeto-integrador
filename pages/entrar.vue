@@ -94,7 +94,7 @@
         <UiCardFooter class="text-center text-sm text-muted-foreground">
             <p class="flex justify-between w-full">
                 <NuxtLink to="/cadastrar" class="underline underline-offset-4 hover:text-primary">
-                    Cadastre-se
+                    <!-- Cadastre-se -->
                 </NuxtLink>
             </p>
         </UiCardFooter>
