@@ -25,6 +25,7 @@ model Turma {
   alunos      Aluno[]
   professores Usuario[]
   ocorrencias Ocorrencia[]
+  atividades  Atividade[]
 }
 
 model Aluno {
@@ -37,6 +38,7 @@ model Aluno {
   turma              Turma        @relation(fields: [turmaId], references: [id])
   turmaId            Int
   ocorrencias        Ocorrencia[]
+  atividades         Atividade[]
 }
 
 model Disciplina {
@@ -72,4 +74,15 @@ model Notificacao {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   ocorrencias Ocorrencia[]
+}
+
+model Atividade {
+  id          Int      @id @default(autoincrement())
+  nome        String
+  dt          DateTime
+  nota        Float
+  turma       Turma    @relation(fields: [turmaId], references: [id])
+  turmaId     Int
+  aluno       Aluno    @relation(fields: [alunoId], references: [id])
+  alunoId     Int
 }

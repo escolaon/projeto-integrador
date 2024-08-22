@@ -52,6 +52,12 @@ export default defineEventHandler(() => {
       icon: "solar:notification-unread-lines-bold-duotone",
       userType: ["coordenador", "responsavel"]
     },
+    {
+      _path: "/atividades",
+      title: "Atividades",
+      icon: "subway:book",
+      userType: ["coordenador"]
+    }
   ];
   pages.sort((a, b) => a.title.localeCompare(b.title));
   pages.unshift(pages.splice(pages.findIndex(p => p._path === "/inicio"), 1)[0]);
