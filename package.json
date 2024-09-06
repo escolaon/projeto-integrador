@@ -59,6 +59,7 @@
     "vue-sonner": "^1.1.2",
     "vue-use-active-scroll": "^1.1.1",
     "vue3-apexcharts": "^1.5.2",
+    "vue3-datepicker": "^0.4.0",
     "yup": "^1.4.0",
     "zod": "^3.23.4"
   },
@@ -72,7 +73,7 @@
     "@sidebase/nuxt-auth": "^0.7.2",
     "@tailwindcss/typography": "^0.5.12",
     "@types/bcrypt": "^5.0.2",
-    "@vueuse/core": "^10.9.0",
+    "@vueuse/core": "^10.11.1",
     "@vueuse/nuxt": "^10.9.0",
     "nuxt": "^3.11.2",
     "nuxt-icon": "^0.6.10",

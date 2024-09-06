@@ -1,8 +1,8 @@
-<!-- file: ~/pages/alunos.ts -->
+<!-- file: ~/pages/atividades.ts -->
 <template>
     <div>
         <div class="mt-6 mb-6">
-            <h3 class="text-2xl font-semibold">Alunos</h3>
+            <h3 class="text-2xl font-semibold">Atividades</h3>
         </div>
 
         <UiDatatable @ready="initializeTable" :options="options" :columns="columns" :data="data">
@@ -27,35 +27,38 @@
                 <AlertDialogContent
                     class="z-[100] text-[15px] data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[700px] translate-x-[-50%] translate-y-[-50%] rounded-lg bg-primary-foreground dark:bg-black p-[25px] shadow-[0_0px_50px_-30px_rgba(0,0,0,0.5)] dark:shadow-[0_0px_80px_-50px_rgba(0,0,0,0.5)] dark:shadow-gray-500 sm:w-[700px] focus:outline-none border border-input">
                     <AlertDialogTitle class="text-xl font-semibold mb-4">
-                        {{ isEditing ? 'Editar Aluno' : 'Adicionar Novo Aluno' }}</AlertDialogTitle>
+                        {{ isEditing ? 'Editar Atividade' : 'Adicionar Nova Atividade' }}</AlertDialogTitle>
                     <AlertDialogDescription class="text-mauve11 mt-4 mb-5 text-[15px] leading-normal">
                         <form @submit.prevent="handleSave">
                             <div class="grid w-full items-center gap-4">
 
                                 <div class="flex flex-col space-y-1.5">
                                     <UiLabel for="nome">Nome</UiLabel>
-                                    <input id="nome" v-model="newAluno.nome" autocomplete="off" class="alert-input" />
+                                    <input id="nome" v-model="newAtividade.nome" autocomplete="off" class="alert-input" />
 
-                                    <UiLabel for="email">Email</UiLabel>
-                                    <input id="email" v-model="newAluno.email" autocomplete="off" class="alert-input" />
-
-                                    <UiLabel for="endereco">Endereço</UiLabel>
-                                    <input id="endereco" v-model="newAluno.endereco" autocomplete="off"
+                                    <UiLabel for="dt">Data</UiLabel>
+                                    <DatePickerComponent
+                                        id="dt"
+                                        v-model="newAtividade.dt"
+                                        format="yyyy-MM-dd"
+                                        @change="handleDateChange"
+                                        class="datepicker-input"
+                                    />
+                                    <UiLabel for="nota">Nota</UiLabel>
+                                    <input id="nota" v-model="newAtividade.nota" autocomplete="off"
                                         class="alert-input" />
-
-                                    <UiLabel for="nomeResponsavel">Nome Responsável</UiLabel>
-                                    <input id="nomeResponsavel" v-model="newAluno.nomeResponsavel" autocomplete="off"
-                                        class="alert-input" />
-
-                                    <UiLabel for="celularResponsavel">Celular Responsável</UiLabel>
-                                    <input id="celularResponsavel" v-model="newAluno.celularResponsavel"
-                                        autocomplete="off" class="alert-input" />
 
                                     <UiLabel for="turma">Turma</UiLabel>
                                     <select id="turma" v-model="selectedTurmaId" @change="updateSelectedTurmaName"
                                         class="alert-input">
                                         <option v-for="turma in turmas" :key="turma.id" :value="turma.id">{{
                                             turma.nome }}</option>
+                                    </select>
+                                    <UiLabel for="aluno">Aluno</UiLabel>
+                                    <select id="aluno" v-model="selectedAlunoId" @change="updateSelectedAlunoName"
+                                        class="alert-input">
+                                        <option v-for="aluno in alunos" :key="aluno.id" :value="aluno.id">{{
+                                            aluno.nome }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -99,18 +102,18 @@
     const modalState = ref(false);
     const editingRowIndex = ref<number | null>(null);
     const selectedTurmaId = ref('');
+    const selectedAlunoId = ref('');
 
-    const newAluno = reactive({
+    const newAtividade = reactive({
         id: null,
         nome: '',
-        email: '',
-        endereco: '',
-        nomeResponsavel: '',
-        celularResponsavel: '',
+        dt: '',
+        nota: '',
         turmaId: '',
+        alunoId: '',
     });
 
-    const data = await $fetch<any>('http://localhost:3000/api/aluno');
+    const data = await $fetch<any>('http://localhost:3000/api/atividade');
 
     const tableRef = shallowRef<InstanceType<typeof DataTableRef<any[]>> | null>(null);
 
@@ -142,14 +145,13 @@
                 text: 'Novo',
                 action: function (e, dt, node, config) {
                     isEditing.value = false;
-                    Object.assign(newAluno, {
+                    Object.assign(newAtividade, {
                         id: null,
                         nome: '',
-                        email: '',
-                        endereco: '',
-                        nomeResponsavel: '',
-                        celularResponsavel: '',
+                        dt: '',
+                        nota: '',
                         turmaId: '',
+                        alunoId: '',
                     });
                     modalState.value = true;
                 },
@@ -160,10 +162,10 @@
     const columns: ConfigColumns[] = [
         { data: 'id', title: 'Id' },
         { data: 'turmaId', title: 'Turma' },
+        { data: 'alunoId', title: 'Aluno' },
         { data: 'nome', title: 'Nome' },
-        { data: 'email', title: 'Email' },
-        { data: 'nomeResponsavel', title: 'Nome Responsável' },
-        { data: 'celularResponsavel', title: 'Celular Responsável' },
+        { data: 'dt', title: 'Data' },
+        { data: 'nota', title: 'Nota' },
         {
             data: null,
             title: '',
@@ -176,9 +178,17 @@
         },
     ];
 
+    const DatePickerComponent = defineAsyncComponent(() =>
+        import('vue3-datepicker').then((mod) => mod.default)
+    );
+
+    function handleDateChange(date: Date) {
+        newAtividade.dt = date.toISOString().split('T')[0];
+    }
+
     async function remove(user: any, event: Event) {
         event.stopPropagation();
-        await $fetch('http://localhost:3000/api/aluno', {
+        await $fetch('http://localhost:3000/api/atividade', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -195,48 +205,62 @@
     function edit(user: any, event: Event) {
         event.stopPropagation();
         isEditing.value = true;
-        Object.assign(newAluno, user);
+        Object.assign(newAtividade, user);
         editingRowIndex.value = data.findIndex((item: any) => item.id === user.id);
         modalState.value = true;
     }
 
     async function handleSave() {
-        if (isEditing.value) {
-            const response = await $fetch(`http://localhost:3000/api/aluno`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newAluno),
-            });
-            const row = tableRef.value?.row(editingRowIndex.value);
-            if (row) {
-                row.data(response).draw(false);
-                Object.assign(data[editingRowIndex.value], response);
-            }
-        } else {
-            const response = await $fetch('http://localhost:3000/api/aluno', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ ...newAluno, turmaId: selectedTurmaId.value }),
-            });
+    let response;
+    if (isEditing.value) {
+        response = await $fetch('http://localhost:3000/api/atividade', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newAtividade),
+        });
+        const row = tableRef.value?.row(editingRowIndex.value);
+        if (row) {
+            row.data(response).draw(false);
+            Object.assign(data[editingRowIndex.value], response);
+        }
+    } else {
+        const requestData = {
+            ...newAtividade,
+            dt: new Date(newAtividade.dt).toISOString(),
+            nota: parseFloat(newAtividade.nota),
+            turmaId: selectedTurmaId.value,
+            alunoId: selectedAlunoId.value,
+        };
+
+        response = await $fetch('http://localhost:3000/api/atividade', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData),
+        });
+
+        if (response && response.id !== undefined) {
             tableRef.value?.row.add(response).draw();
             data.push(response);
+        } else {
+            console.error('Invalid response data:', response);
         }
-
-        modalState.value = false;
-        Object.assign(newAluno, {
-            id: null,
-            nome: '',
-            email: '',
-            endereco: '',
-            nomeResponsavel: '',
-            celularResponsavel: '',
-            turmaId: '',
-        });
     }
+
+    modalState.value = false;
+    Object.assign(newAtividade, {
+        id: null,
+        nome: '',
+        dt: '',
+        nota: '',
+        turmaId: '',
+        alunoId: '',
+    });
+}
+
 
     watch(selectedRows, (newValue) => {
         const selectButton = tableRef.value?.button(0);
@@ -277,17 +301,29 @@
     });
 
     const turmas = ref([]);
+    const alunos = ref([]);
+
+
 
     onMounted(async () => {
         const response = await fetch('http://localhost:3000/api/turmas');
         const data = await response.json();
         turmas.value = data;
-        console.log(data);
     });
+
+    onMounted(async () => {
+        const response = await fetch('http://localhost:3000/api/aluno');
+        const data = await response.json();
+        alunos.value = data;
+    })
 </script>
 
 <style scoped>
     .alert-input {
         @apply h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-[16px] ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground file:hover:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 sm:text-sm;
+    }
+
+    .datepicker-input {
+        @apply h-10 w-full bg-background border border-input rounded-md px-3 py-2 text-[16px] ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
     }
 </style>

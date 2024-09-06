@@ -1,21 +1,7 @@
 # Coordenador 
-## Primeiro Acesso
-- Entra no site e na landing page acessa o link de cadastro
-- Preenche o formulário com o nome, e-mail e senha
-- Recebe um e-mail de confirmação
-- Clica no link de confirmação
-- É ativado no banco de dados
-- É redirecionado para a página de login
-- Faz login com o e-mail e senha cadastrados
-- É verificado que não possui escola cadastrada
-- É redirecionado para a página de cadastro de escola
-- Preenche o formulário com os dados da escola com Nome, CNPJ e Celular
-- Clica em salvar
-- É redirecionado para a dashboard da escola
-
 ## Entrar
 - Entra no site e na landing page acessa o link de login
-- Preenche o formulário com o e-mail e senha
+- Preenche o formulário com o e-mail e senha recebidos com perfil de coordenador
 - É redirecionado para a dashboard da escola
 
 ## Sair

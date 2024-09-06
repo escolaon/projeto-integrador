@@ -1,6 +1,8 @@
-# Projeto Integrador I
+# Projeto Integrador
 
-Bem-vindo ao Projeto Integrador I, uma aplicação web inovadora destinada a facilitar a comunicação entre escolas e pais. Nossa solução permite o envio automático de notificações via WhatsApp sobre a frequência dos alunos, proporcionando uma experiência integrada e eficiente para todos os usuários.
+Bem-vindo ao Projeto Integrador, uma aplicação web inovadora destinada a facilitar a comunicação entre escolas e pais. Nossa solução permite o envio automático de notificações via WhatsApp sobre a frequência dos alunos, proporcionando uma experiência integrada e eficiente para todos os usuários.
+
+Agora, acompanhe o desempenho escolar de alunos através de um acesso esxclusivo para responsáveis.
 
 ## Visão Geral
 
@@ -11,6 +13,7 @@ Este projeto utiliza uma arquitetura robusta baseada em Nuxt.js, com um banco de
 - **Envio Automático de Notificações via WhatsApp**: Comunicação rápida e eficiente entre escola e pais.
 - **Gestão de Ocorrências**: Professores podem adicionar ocorrências e o sistema processa e envia notificações.
 - **Dashboard para Coordenadores**: Gerencie e envie notificações pendentes.
+- **Acesso para Responsáveis**: Acompanhe o desempenho escolar do aluno.
 
 ## Pré-requisitos
 
@@ -70,8 +73,8 @@ git checkout -b feature/<seuNome>
 Utilize o NVM para instalar e usar a versão apropriada do Node.js:
 
 ```bash
-nvm install 18
-nvm use 18
+nvm install 20
+nvm use 20
 npm install
 ```
 

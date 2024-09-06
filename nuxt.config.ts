@@ -159,8 +159,11 @@ export default defineNuxtConfig({
   future: {
     typescriptBundlerResolution: true,
   },
+
   experimental: {
     payloadExtraction: true,
     watcher: "chokidar-granular",
   },
+
+  compatibilityDate: "2024-08-19",
 });
