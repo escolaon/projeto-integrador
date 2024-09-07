@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
-"module": "esnext",
-"module": "esnext",
-    "baseUrl": "./"
+    "module": "esnext",
+    "baseUrl": "./",
   },
   "extends": "./.nuxt/tsconfig.json"
 }

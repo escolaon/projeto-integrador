@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    navigateTo("/inicio");
+    navigateTo("/dashboard");
 </script>
 <template>
     <div>

@@ -1,9 +1,8 @@
-const description = "Escola ON - Sistema de Gestão Escolar";
-const lang = "pt";
-const title = "Escola ON";
-const themeColor = "#111827";
+const description = process.env.DESCRIPTION;
+const lang = process.env.LANGUAGE;
+const title = process.env.APP_NAME;
 const url = process.env.PUBLIC_URL;
-
+const titleTemplate = process.env.DESCRIPTION;
 export default defineNuxtConfig({
   // Devtools configuration
   devtools: { enabled: false },
@@ -29,13 +28,12 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@nuxtjs/color-mode",
     "@vueuse/nuxt",
-    "nuxt-icon",
+    "@nuxt/icon",
     "@samk-dev/nuxt-vcalendar",
     "@morev/vue-transitions/nuxt",
     "radix-vue/nuxt",
     "@vee-validate/nuxt",
     "@nuxt/content",
-    "@kevinmarrec/nuxt-pwa",
     "@nuxtjs/seo",
     "@nuxt/eslint",
     "nuxt-swiper",
@@ -50,8 +48,11 @@ export default defineNuxtConfig({
   // Auth configuration
   auth: {
     globalAppMiddleware: true,
-    provider: {
-      type: "authjs",
+    originEnvKey: 'AUTH_ORIGIN',
+    baseURL: 'http://localhost:3000/api/auth',
+    provider: { type: "authjs", },
+    sessionRefresh: {
+      enablePeriodically: true,
     },
   },
 
@@ -105,7 +106,7 @@ export default defineNuxtConfig({
     layoutTransition: { name: "fade", mode: "out-in" },
     head: {
       title,
-      titleTemplate: "EscolaON",
+      titleTemplate,
       script: [
         { src: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.9/pdfmake.min.js", defer: true },
         { src: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.9/vfs_fonts.min.js", defer: true },
@@ -113,21 +114,6 @@ export default defineNuxtConfig({
     },
   },
 
-  // PWA configuration
-  pwa: {
-    meta: {
-      description,
-      lang,
-      name: title,
-      ogDescription: description,
-      ogSiteName: title,
-      ogTitle: title,
-      ogType: "website",
-      ogUrl: url,
-      theme_color: themeColor,
-      title,
-    },
-  },
 
   // Site configuration
   site: {
