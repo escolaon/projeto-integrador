@@ -8,7 +8,7 @@
           </UiButton>
           <NuxtLink to="/" class="text-lg font-bold">
             <Icon name="solar:map-point-school-broken" class="h-8 w-8 text-green-600" />
-            EscolaON
+            {{ title }}
           </NuxtLink>
         </div>
       </div>
@@ -32,6 +32,9 @@
 </template>
 
 <script lang="ts" setup>
+
+  // TODO - set title to app Name from env
+  const title = "Escola ON";
 
   const modes = [
     { icon: "lucide:sun", title: "Light", value: "light" },

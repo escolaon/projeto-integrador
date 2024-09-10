@@ -1,5 +1,5 @@
 services:
-  pi:
+  escola-on:
     build: ./
     ports:
       - 3000:3000

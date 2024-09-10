@@ -11,8 +11,8 @@ export default defineEventHandler(() => {
   
   const pages: Page[] = [
     {
-      _path: "/inicio",
-      title: "Inicio",
+      _path: "/dashboard",
+      title: "Dashboard",
       icon: "lets-icons:home-duotone",
       userType: ["coordenador", "professor", "responsavel"]
     },
@@ -60,6 +60,6 @@ export default defineEventHandler(() => {
     }
   ];
   pages.sort((a, b) => a.title.localeCompare(b.title));
-  pages.unshift(pages.splice(pages.findIndex(p => p._path === "/inicio"), 1)[0]);
+  pages.unshift(pages.splice(pages.findIndex(p => p._path === "/dashboard"), 1)[0]);
   return pages;
 });

@@ -77,12 +77,12 @@ model Notificacao {
 }
 
 model Atividade {
-  id          Int      @id @default(autoincrement())
-  nome        String
-  dt          DateTime
-  nota        Float
-  turma       Turma    @relation(fields: [turmaId], references: [id])
-  turmaId     Int
-  aluno       Aluno    @relation(fields: [alunoId], references: [id])
-  alunoId     Int
+  id      Int      @id @default(autoincrement())
+  nome    String
+  dt      DateTime
+  nota    Float
+  turma   Turma    @relation(fields: [turmaId], references: [id])
+  turmaId Int
+  aluno   Aluno    @relation(fields: [alunoId], references: [id])
+  alunoId Int
 }

@@ -1,17 +1,27 @@
-// utils/getModelMetadata.js
+// utils/getModelMetadata.ts
 import { PrismaClient } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export async function getModelMetadata(modelName: string) {
-    const model = prisma[modelName];
-    const modelMetadata = await model.findMany({
-      // Add logic to fetch metadata, such as field types, required fields, etc.
-      select: {
-        name: true,
-        type: true,
-        isRequired: true,
-      },
-    });
-    return modelMetadata;
+type PrismaModels = Prisma.ModelName;
+
+export async function getModelMetadata(modelName: PrismaModels) {
+  const model = (prisma as any)[modelName];
+  if (!model) {
+    throw new Error(`Model ${modelName} not found`);
+  }
+  
+  const dmmf = (prisma as any)._dmmf.modelMap[modelName];
+  if (!dmmf) {
+    throw new Error(`Metadata for model ${modelName} not found`);
+  }
+
+  const modelMetadata = dmmf.fields.map((field: any) => ({
+    name: field.name,
+    type: field.type,
+    isRequired: field.isRequired,
+  }));
+
+  return modelMetadata;
 }

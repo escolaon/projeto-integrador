@@ -9,7 +9,7 @@
             <UiBadge v-if="l.label" class="px-2 py-0 text-[10px] dark:bg-lime-500">
                 {{ l.label }}
             </UiBadge>
-            <UiDivider v-if="l._path === '/inicio'" class="mt-4 mb-4" />
+            <UiDivider v-if="l._path === '/dashboard'" class="mt-4 mb-4" />
         </template>
     </nav>
 </template>
