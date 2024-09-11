@@ -37,6 +37,7 @@ export default defineNuxtConfig({
     "@nuxtjs/seo",
     "@nuxt/eslint",
     "nuxt-swiper",
+    "@nuxt/image",
   ],
 
   // TailwindCSS configuration
