@@ -6,6 +6,7 @@
         "endereco": "Rua das Flores, 123",
         "celularResponsavel": "5519974057577",
         "nomeResponsavel": "João da Silva",
+        "emailResponsavel": "responsavelCarlos@teste.com",
         "turmaId": 1
     },
     {
@@ -15,6 +16,7 @@
         "endereco": "Rua Vinte e Quatro de Maio, 43",
         "celularResponsavel": "5519974057577",
         "nomeResponsavel": "Marcos Souza",
+        "emailResponsavel": "responsavelMarcos@teste.com",
         "turmaId": 1
     },
     {
@@ -24,6 +26,7 @@
         "endereco": "Rua de São João, 29",
         "celularResponsavel": "5519974057577",
         "nomeResponsavel": "José Pereira",
+        "emailResponsavel": "responsavelJoao@teste.com",
         "turmaId": 1
     },
     {
@@ -33,6 +36,7 @@
         "endereco": "Avenida Paulista, 127",
         "celularResponsavel": "5519974057577",
         "nomeResponsavel": "Maria Santos",
+        "emailResponsavel": "responsavelAna@teste.com",
         "turmaId": 1
     },
     {
@@ -42,6 +46,7 @@
         "endereco": "Rua da Floresta, 1276",
         "celularResponsavel": "5519974057577",
         "nomeResponsavel": "Fernanda Oliveira",
+        "emailResponsavel": "responsavelPaulo@teste.com",
         "turmaId": 2
     },
     {
@@ -51,6 +56,7 @@
         "endereco": "Rua Cerro, 123",
         "celularResponsavel": "5519974057577",
         "nomeResponsavel": "Carlos Lima",
+        "emailResponsavel": "responsavelLucas@teste.com",
         "turmaId": 2
     },
     {
@@ -60,6 +66,7 @@
         "endereco": "Rua das Flores, 123",
         "celularResponsavel": "5519974057577",
         "nomeResponsavel": "Ana Gomes",
+        "emailResponsavel": "responsavelMariana@teste.com",
         "turmaId": 2
     },
     {
@@ -69,6 +76,7 @@
         "endereco": "Rua Marques, 123",
         "celularResponsavel": "5519974057577",
         "nomeResponsavel": "Ana da Silva",
+        "emailResponsavel": "responsavelFranscisco@teste.com",
         "turmaId": 2
     }
 ]

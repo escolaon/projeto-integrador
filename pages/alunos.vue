@@ -5,7 +5,7 @@
             <h3 class="text-2xl font-semibold">Alunos</h3>
         </div>
 
-        <UiDatatable @ready="initializeTable" :options="options" :columns="columns" :data="data">
+        <UiDatatable @ready="initializeTable" :options="options" :columns="columns" :data="mappedData">
             <template #actions="{ cellData }" class="flex items-center m-0 p-0">
                 <UiButton variant="outline" @click="edit(cellData, $event)" class="px-2 m-0 mr-2 h-8">
                     Editar
@@ -51,6 +51,9 @@
                                     <input id="celularResponsavel" v-model="newAluno.celularResponsavel"
                                         autocomplete="off" class="alert-input" />
 
+                                    <UiLabel for="emailResponsavel">Email Responsável</UiLabel>
+                                    <input id="emailResponsavel" v-model="newAluno.emailResponsavel" autocomplete="off" class="alert-input" />
+
                                     <UiLabel for="turma">Turma</UiLabel>
                                     <select id="turma" v-model="selectedTurmaId" @change="updateSelectedTurmaName"
                                         class="alert-input">
@@ -62,13 +65,10 @@
                         </form>
                     </AlertDialogDescription>
                     <div class="flex justify-end gap-[25px]">
-                        <AlertDialogCancel
-                            class="text-mauve11 bg-mauve4 hover:bg-mauve5 focus:shadow-mauve7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-semibold leading-none outline-none focus:shadow-[0_0_0_2px]">
+                        <AlertDialogCancel class="text-mauve11 bg-mauve4 hover:bg-mauve5 focus:shadow-mauve7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-semibold leading-none outline-none focus:shadow-[0_0_0_2px]">
                             Voltar
                         </AlertDialogCancel>
-                        <AlertDialogAction
-                            class="text-red11 bg-red4 hover:bg-red5 focus:shadow-red7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-semibold leading-none outline-none focus:shadow-[0_0_0_2px]"
-                            @click="handleSave()">
+                        <AlertDialogAction class="text-red11 bg-red4 hover:bg-red5 focus:shadow-red7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-semibold leading-none outline-none focus:shadow-[0_0_0_2px]" @click="handleSave()">
                             {{ isEditing ? 'Atualizar' : 'Salvar' }}
                         </AlertDialogAction>
                     </div>
@@ -79,164 +79,191 @@
 </template>
 
 <script lang="ts" setup>
-    import { ref, shallowRef, watch, reactive, onMounted } from 'vue';
-    import type DataTableRef from 'datatables.net';
-    import type { Config, ConfigColumns } from 'datatables.net';
-    import languageBR from 'datatables.net-plugins/i18n/pt-BR.mjs';
-    import {
-        AlertDialogAction,
-        AlertDialogCancel,
-        AlertDialogContent,
-        AlertDialogDescription,
-        AlertDialogOverlay,
-        AlertDialogPortal,
-        AlertDialogRoot,
-        AlertDialogTitle,
-    } from 'radix-vue';
+import { ref, shallowRef, watch, reactive, onMounted } from 'vue';
+import type DataTableRef from 'datatables.net';
+import type { Config, ConfigColumns } from 'datatables.net';
+import languageBR from 'datatables.net-plugins/i18n/pt-BR.mjs';
+import {
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogOverlay,
+    AlertDialogPortal,
+    AlertDialogRoot,
+    AlertDialogTitle,
+} from 'radix-vue';
 
-    const selectedRows = ref(0);
-    const isEditing = ref(false);
-    const modalState = ref(false);
-    const editingRowIndex = ref<number | null>(null);
-    const selectedTurmaId = ref('');
+const selectedRows = ref(0);
+const isEditing = ref(false);
+const modalState = ref(false);
+const editingRowIndex = ref<number | null>(null);
+const selectedTurmaId = ref('');
 
-    const newAluno = reactive({
+const newAluno = reactive({
+    id: null,
+    nome: '',
+    email: '',
+    endereco: '',
+    nomeResponsavel: '',
+    celularResponsavel: '',
+    emailResponsavel:'',
+    turmaId: '',
+});
+
+const data = ref<any[]>([]);
+const turmas = ref<any[]>([]);
+const mappedData = ref<any[]>([]);
+
+async function loadTurmas() {
+    turmas.value = await $fetch<any>('http://localhost:3000/api/turmas');
+}
+
+async function loadAlunos() {
+    data.value = await $fetch<any>('http://localhost:3000/api/aluno');
+
+    mappedData.value = data.value.map(aluno => {
+        return {
+            ...aluno,
+            turmaNome: turmas.value.find(turma => turma.id === aluno.turmaId)?.nome || 'Desconhecida'
+        };
+    });
+}
+
+onMounted(async () => {
+    await loadTurmas(); 
+    await loadAlunos(); 
+});
+
+const tableRef = shallowRef<InstanceType<typeof DataTableRef<any[]>> | null>(null);
+
+const options: Config = {
+    dom: "<'flex flex-col lg:flex-row w-full lg:items-start lg:justify-between gap-5 mb-5 lg:pr-1'Bf><'border rounded-lg't><'flex flex-col lg:flex-row gap-5 items-center lg:justify-between w-full pt-3 p-5 m-auto'lp>",
+    searching: true,
+    language: languageBR,
+    paging: true,
+    ordering: true,
+    responsive: true,
+    autoWidth: true,
+    select: {
+        style: 'multi',
+    },
+    buttons: [
+        {
+            text: () => (selectedRows.value > 0 ? 'Desselecionar' : 'Selecionar Todos'),
+            action: function (e, dt, node, config) {
+                if (selectedRows.value > 0) {
+                    dt.rows().deselect();
+                    selectedRows.value = 0;
+                } else {
+                    dt.rows().select();
+                    selectedRows.value = dt.rows({ selected: true }).count();
+                }
+            },
+        },
+        {
+            text: 'Novo',
+            action: function (e, dt, node, config) {
+                isEditing.value = false;
+                Object.assign(newAluno, {
+                    id: null,
+                    nome: '',
+                    email: '',
+                    endereco: '',
+                    nomeResponsavel: '',
+                    celularResponsavel: '',
+                    emailResponsavel: '',
+                    turmaId: '',
+                });
+                modalState.value = true;
+            },
+        },
+    ],
+};
+
+const columns: ConfigColumns = [
+    { title: 'Nome', data: 'nome' },
+    { title: 'Turma', data: 'turmaNome' }, 
+    { title: 'Email', data: 'email' },
+    { 
+        data: null, 
+        title: 'Responsável', 
+        render: (data) => {
+            return `${data.nomeResponsavel} <br/> <small>${data.emailResponsavel}</small> <br/> <small>${data.celularResponsavel}</small>`;
+        }
+    },
+    {
+        data: null,
+        title: "",
+        className: "no-export",
+        searchable: false,
+        orderable: false,
+        name: "actions",
+        render: "#actions",
+        responsivePriority: 3,
+    }
+];
+
+async function remove(user: any, event: Event) {
+    event.stopPropagation();
+    await $fetch('http://localhost:3000/api/aluno', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: { user },
+    }).then(() => {
+        loadAlunos(); 
+    });
+}
+
+
+async function edit(user: any, event: Event) {
+    event.stopPropagation();
+    isEditing.value = true;
+    Object.assign(newAluno, user);
+    modalState.value = true;
+}
+
+async function handleSave() {
+    newAluno.turmaId = selectedTurmaId.value;
+
+    if (isEditing.value) {
+        const response = await $fetch(`http://localhost:3000/api/aluno`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newAluno),
+        });
+    } else {
+        const response = await $fetch('http://localhost:3000/api/aluno', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newAluno),
+        });
+
+        tableRef.value?.row.add(response).draw();
+        data.value.push(response);
+    }
+
+    modalState.value = false;
+
+    Object.assign(newAluno, {
         id: null,
         nome: '',
         email: '',
         endereco: '',
         nomeResponsavel: '',
         celularResponsavel: '',
+        emailResponsavel: '',
         turmaId: '',
     });
 
-    const data = await $fetch<any>('http://localhost:3000/api/aluno');
-
-    const tableRef = shallowRef<InstanceType<typeof DataTableRef<any[]>> | null>(null);
-
-    const options: Config = {
-        dom: "<'flex flex-col lg:flex-row w-full lg:items-start lg:justify-between gap-5 mb-5 lg:pr-1'Bf><'border rounded-lg't><'flex flex-col lg:flex-row gap-5 items-center lg:justify-between w-full pt-3 p-5 m-auto'lp>",
-        searching: true,
-        language: languageBR,
-        paging: true,
-        ordering: true,
-        responsive: true,
-        autoWidth: true,
-        select: {
-            style: 'multi',
-        },
-        buttons: [
-            {
-                text: () => (selectedRows.value > 0 ? 'Desselecionar' : 'Selecionar Todos'),
-                action: function (e, dt, node, config) {
-                    if (selectedRows.value > 0) {
-                        dt.rows().deselect();
-                        selectedRows.value = 0;
-                    } else {
-                        dt.rows().select();
-                        selectedRows.value = dt.rows({ selected: true }).count();
-                    }
-                },
-            },
-            {
-                text: 'Novo',
-                action: function (e, dt, node, config) {
-                    isEditing.value = false;
-                    Object.assign(newAluno, {
-                        id: null,
-                        nome: '',
-                        email: '',
-                        endereco: '',
-                        nomeResponsavel: '',
-                        celularResponsavel: '',
-                        turmaId: '',
-                    });
-                    modalState.value = true;
-                },
-            },
-        ],
-    };
-
-    const columns: ConfigColumns[] = [
-        { data: 'id', title: 'Id' },
-        { data: 'turmaId', title: 'Turma' },
-        { data: 'nome', title: 'Nome' },
-        { data: 'email', title: 'Email' },
-        { data: 'nomeResponsavel', title: 'Nome Responsável' },
-        { data: 'celularResponsavel', title: 'Celular Responsável' },
-        {
-            data: null,
-            title: '',
-            className: 'no-export',
-            searchable: false,
-            orderable: false,
-            name: 'actions',
-            render: '#actions',
-            responsivePriority: 3,
-        },
-    ];
-
-    async function remove(user: any, event: Event) {
-        event.stopPropagation();
-        await $fetch('http://localhost:3000/api/aluno', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: { user },
-        }).then(() => {
-            const row = tableRef.value?.row((idx, data) => data.id === user.id);
-            if (row) {
-                row.remove().draw(false);
-            }
-        });
-    }
-
-    function edit(user: any, event: Event) {
-        event.stopPropagation();
-        isEditing.value = true;
-        Object.assign(newAluno, user);
-        editingRowIndex.value = data.findIndex((item: any) => item.id === user.id);
-        modalState.value = true;
-    }
-
-    async function handleSave() {
-        if (isEditing.value) {
-            const response = await $fetch(`http://localhost:3000/api/aluno`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newAluno),
-            });
-            const row = tableRef.value?.row(editingRowIndex.value);
-            if (row) {
-                row.data(response).draw(false);
-                Object.assign(data[editingRowIndex.value], response);
-            }
-        } else {
-            const response = await $fetch('http://localhost:3000/api/aluno', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ ...newAluno, turmaId: selectedTurmaId.value }),
-            });
-            tableRef.value?.row.add(response).draw();
-            data.push(response);
-        }
-
-        modalState.value = false;
-        Object.assign(newAluno, {
-            id: null,
-            nome: '',
-            email: '',
-            endereco: '',
-            nomeResponsavel: '',
-            celularResponsavel: '',
-            turmaId: '',
-        });
-    }
+    loadAlunos();
+}
 
     watch(selectedRows, (newValue) => {
         const selectButton = tableRef.value?.button(0);
@@ -274,15 +301,6 @@
         if (tableRef.value) {
             bindActionButtons();
         }
-    });
-
-    const turmas = ref([]);
-
-    onMounted(async () => {
-        const response = await fetch('http://localhost:3000/api/turmas');
-        const data = await response.json();
-        turmas.value = data;
-        console.log(data);
     });
 </script>
 

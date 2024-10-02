@@ -13,10 +13,10 @@ model Usuario {
   email       String       @unique
   senha       String
   celular     String
-  tipo        String
+  tipo        String       
   turmas      Turma[]
   ocorrencias Ocorrencia[]
-  Disciplina  Disciplina[]
+  disciplinas Disciplina[]
 }
 
 model Turma {
@@ -31,9 +31,10 @@ model Turma {
 model Aluno {
   id                 Int          @id @default(autoincrement())
   nome               String
-  email              String
+  email              String       
   endereco           String
   nomeResponsavel    String
+  emailResponsavel   String      
   celularResponsavel String
   turma              Turma        @relation(fields: [turmaId], references: [id])
   turmaId            Int

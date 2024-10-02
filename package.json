@@ -12,7 +12,7 @@
     "prepare": "npx nuxi@latest prepare",
     "generate": "npx nuxi@latest generate",
     "build": "npx nuxi@latest build",
-    "dev": "npm run kill && npx nuxi dev --logLevel silent",
+    "dev": "npx nuxi dev --logLevel silent",
     "host": "npx nuxi dev --host --tunnel --logLevel silent",
     "start": "npx nuxi@latest start",
     "docker": "docker build --pull -t pi . && docker run -p 3000:3000 pi",
@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@faker-js/faker": "^9.0.0",
+    "@iconify/vue": "^4.1.2",
     "@internationalized/date": "^3.5.2",
     "@morev/vue-transitions": "^3.0.2",
     "@next-auth/prisma-adapter": "^1.0.7",

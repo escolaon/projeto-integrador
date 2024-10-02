@@ -13,8 +13,8 @@ export default defineEventHandler(async (event) => {
   const celular = body.celular;
   const celularResponsavel = body.celularResponsavel;
   const turmaId = body.turmaId;
+  const emailResponsavel = body.emailResponsavel;
 
-  console.log(body)
   
   const aluno = await prisma.aluno.update({
     where: {
@@ -27,6 +27,7 @@ export default defineEventHandler(async (event) => {
       endereco: endereco,
       nomeResponsavel: nomeResponsavel,
       celularResponsavel: celularResponsavel,
+      emailResponsavel: emailResponsavel,
       turmaId: turmaId
     }
   })

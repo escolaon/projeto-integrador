@@ -42,7 +42,6 @@
   const senha = ref('');
 
   onMounted(() => {
-    console.log(data);
     nome.value = data.nome;
     email.value = data.email;
     celular.value = data.celular;
