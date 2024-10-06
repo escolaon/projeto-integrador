@@ -14,7 +14,11 @@ export default defineEventHandler(async (event: H3Event) => {
           dt: new Date(body.dt),
           nota: parseFloat(body.nota),
           turmaId: body.turmaId,
-          alunoId: body.alunoId
+          turmaNome: body.turmaNome,
+          alunoId: body.alunoId,
+          alunoNome: body.alunoNome,
+          disciplinaId: body.disciplinaId,
+          disciplinaNome: body.disciplinaNome
         },
       });
       return response;

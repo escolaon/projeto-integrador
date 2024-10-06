@@ -1,41 +1,41 @@
 [
     {
         "id": 1,
-        "nome": "Admin",
-        "email": "admin@escola.on",
-        "senha": "$2b$10$PmI51SqJpTJ4stgWqPZIyefKyeIckhIixW2QQmzDBG5L464jNYnKa",
+        "nome": "Admin Escola",
+        "email": "admin@escola.com",
+        "senha": "$2b$10$1yP2yGdrSwfSZMJCAjGPnuueZamK59XQZ0Owb/zL.Z.X2BDeFFILO",
         "celular": "0000000000000",
         "tipo": "admin"
     },
     {
         "id": 2,
-        "nome": "João da Silva",
-        "email": "joao@escola.com",
-        "senha": "$2b$10$PmI51SqJpTJ4stgWqPZIyefKyeIckhIixW2QQmzDBG5L464jNYnKa",
+        "nome": "Coordenador Escola",
+        "email": "coordenador@escola.com",
+        "senha": "$2b$10$1yP2yGdrSwfSZMJCAjGPnuueZamK59XQZ0Owb/zL.Z.X2BDeFFILO",
         "celular": "5519974057577",
         "tipo": "coordenador"
     },
     {
         "id": 3,
-        "nome": "Carlos da Silva",
-        "email": "carlos@escola.com",
-        "senha": "$2b$10$PmI51SqJpTJ4stgWqPZIyefKyeIckhIixW2QQmzDBG5L464jNYnKa",
+        "nome": "Professor Escola 1",
+        "email": "professor1@escola.com",
+        "senha": "$2b$10$1yP2yGdrSwfSZMJCAjGPnuueZamK59XQZ0Owb/zL.Z.X2BDeFFILO",
         "celular": "5519974057577",
         "tipo": "professor"
     },
     {
         "id": 4,
-        "nome": "Rafael Costa",
-        "email": "rafael@escola.com",
-        "senha": "$2b$10$PmI51SqJpTJ4stgWqPZIyefKyeIckhIixW2QQmzDBG5L464jNYnKa",
+        "nome": "Responsável Aluno Francisco",
+        "email": "responsavelfrancisco@teste.com",
+        "senha": "$2b$10$1yP2yGdrSwfSZMJCAjGPnuueZamK59XQZ0Owb/zL.Z.X2BDeFFILO",
         "celular": "5519974057577",
-        "tipo": "professor"
+        "tipo": "responsavel"
     },
     {
         "id": 5,
-        "nome": "Maria da Silva",
-        "email": "maria@escola.com",
-        "senha": "$2b$10$PmI51SqJpTJ4stgWqPZIyefKyeIckhIixW2QQmzDBG5L464jNYnKa",
+        "nome": "Professor Escola 2",
+        "email": "professor2@escola.com",
+        "senha": "$2b$10$1yP2yGdrSwfSZMJCAjGPnuueZamK59XQZ0Owb/zL.Z.X2BDeFFILO",
         "celular": "5519974057577",
         "tipo": "professor"
     }

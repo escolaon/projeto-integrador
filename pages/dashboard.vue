@@ -9,7 +9,7 @@
             </p>
         </div>
         <div class="text-sm">
-            Univesp - Engenharia da Computação / Ciência de Dados - Projeto Integrador 2 - 09/2024
+            Univesp - Engenharia da Computação / Ciência de Dados - Projeto Integrador 2/2024
         </div>
     </div>
 </template>

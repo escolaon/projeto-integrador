@@ -14,49 +14,55 @@ export default defineEventHandler(() => {
       _path: "/dashboard",
       title: "Dashboard",
       icon: "lets-icons:home-duotone",
-      userType: ["coordenador", "professor", "responsavel"]
+      userType: ["admin", "coordenador", "professor", "responsavel"]
     },
     {
       _path: "/professores",
       title: "Professores",
       icon: "ph:chalkboard-teacher-duotone",
-      userType: ["coordenador"]
+      userType: ["admin", "coordenador"]
     },
     {
       _path: "/disciplinas",
       title: "Disciplinas",
       icon: "icon-park-twotone:book-one",
-      userType: ["coordenador"]
+      userType: ["admin", "coordenador"]
     },
     {
       _path: "/turmas",
       title: "Turmas",
       icon: "clarity:group-solid",
-      userType: ["coordenador"]
+      userType: ["admin", "coordenador"]
     },
     {
       _path: "/alunos",
       title: "Alunos",
       icon: "ph:student-duotone",
-      userType: ["coordenador"]
+      userType: ["admin", "coordenador", "professor"]
     },
     {
       _path: "/ocorrencias",
       title: "Ocorrencias",
       icon: "material-symbols-light:event-list-outline",
-      userType: ["coordenador", "professor"]
+      userType: ["admin", "coordenador", "professor"]
     },
     {
       _path: "/notificacoes",
       title: "Notificações",
       icon: "solar:notification-unread-lines-bold-duotone",
-      userType: ["coordenador", "responsavel"]
+      userType: ["admin", "coordenador"]
     },
     {
       _path: "/atividades",
       title: "Atividades",
       icon: "subway:book",
-      userType: ["coordenador"]
+      userType: ["admin", "coordenador", "professor"]
+    },
+    {
+      _path: "/info-alunos",
+      title: "Informações Alunos",
+      icon: "ph:student-duotone",
+      userType: ["responsavel"]
     }
   ];
   pages.sort((a, b) => a.title.localeCompare(b.title));

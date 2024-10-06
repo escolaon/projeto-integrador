@@ -5,7 +5,7 @@
             <h3 class="text-2xl font-semibold">Atividades</h3>
         </div>
 
-        <UiDatatable @ready="initializeTable" :options="options" :columns="columns" :data="data">
+        <UiDatatable @ready="initializeTable" :options="options" :columns="columns" :data="mappedData">
             <template #actions="{ cellData }" class="flex items-center m-0 p-0">
                 <UiButton variant="outline" @click="edit(cellData, $event)" class="px-2 m-0 mr-2 h-8">
                     Editar
@@ -33,7 +33,7 @@
                             <div class="grid w-full items-center gap-4">
 
                                 <div class="flex flex-col space-y-1.5">
-                                    <UiLabel for="nome">Nome</UiLabel>
+                                    <UiLabel for="nome">Atividade</UiLabel>
                                     <input id="nome" v-model="newAtividade.nome" autocomplete="off" class="alert-input" />
 
                                     <UiLabel for="dt">Data</UiLabel>
@@ -49,16 +49,16 @@
                                         class="alert-input" />
 
                                     <UiLabel for="turma">Turma</UiLabel>
-                                    <select id="turma" v-model="selectedTurmaId" @change="updateSelectedTurmaName"
-                                        class="alert-input">
-                                        <option v-for="turma in turmas" :key="turma.id" :value="turma.id">{{
-                                            turma.nome }}</option>
+                                    <select id="turma" v-model="selectedTurmaId" @change="onTurmaChange" class="alert-input">
+                                        <option v-for="turma in turmas" :key="turma.id" :value="turma.id">{{ turma.nome }}</option>
                                     </select>
                                     <UiLabel for="aluno">Aluno</UiLabel>
-                                    <select id="aluno" v-model="selectedAlunoId" @change="updateSelectedAlunoName"
-                                        class="alert-input">
-                                        <option v-for="aluno in alunos" :key="aluno.id" :value="aluno.id">{{
-                                            aluno.nome }}</option>
+                                    <select id="aluno" v-model="selectedAlunoId" @change="onAlunoChange" class="alert-input">
+                                        <option v-for="aluno in alunos" :key="aluno.id" :value="aluno.id">{{ aluno.nome }}</option>
+                                    </select>
+                                    <UiLabel for="disciplina">Disciplina</UiLabel>
+                                    <select id="disciplina" v-model="selectedDisciplinaId" @change="onDisciplinaChange" class="alert-input">
+                                        <option v-for="disciplina in disciplinas" :key="disciplina.id" :value="disciplina.id">{{ disciplina.nome }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -82,185 +82,243 @@
 </template>
 
 <script lang="ts" setup>
-    import { ref, shallowRef, watch, reactive, onMounted } from 'vue';
-    import type DataTableRef from 'datatables.net';
-    import type { Config, ConfigColumns } from 'datatables.net';
-    import languageBR from 'datatables.net-plugins/i18n/pt-BR.mjs';
-    import {
-        AlertDialogAction,
-        AlertDialogCancel,
-        AlertDialogContent,
-        AlertDialogDescription,
-        AlertDialogOverlay,
-        AlertDialogPortal,
-        AlertDialogRoot,
-        AlertDialogTitle,
-    } from 'radix-vue';
+import { ref, shallowRef, watch, reactive, onMounted } from 'vue';
+import type DataTableRef from 'datatables.net';
+import type { Config, ConfigColumns } from 'datatables.net';
+import languageBR from 'datatables.net-plugins/i18n/pt-BR.mjs';
+import {
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogOverlay,
+    AlertDialogPortal,
+    AlertDialogRoot,
+    AlertDialogTitle,
+} from 'radix-vue';
 
-    const selectedRows = ref(0);
-    const isEditing = ref(false);
-    const modalState = ref(false);
-    const editingRowIndex = ref<number | null>(null);
-    const selectedTurmaId = ref('');
-    const selectedAlunoId = ref('');
+const selectedRows = ref(0);
+const isEditing = ref(false);
+const modalState = ref(false);
+const editingRowIndex = ref<number | null>(null);
+const selectedTurmaId = ref('');
+const selectedAlunoId = ref('');
+const selectedDisciplinaId = ref('');
 
-    const newAtividade = reactive({
-        id: null,
-        nome: '',
-        dt: '',
-        nota: '',
-        turmaId: '',
-        alunoId: '',
+
+
+const newAtividade = reactive({
+    id: null,
+    nome: '',
+    dt: '',
+    nota: '',
+    turmaNome: '',
+    turmaId: '',
+    alunoNome: '',
+    alunoId: '',
+    disciplinaId: '',
+    disciplinaNome: ''
+});
+
+const data = ref<any[]>([]);
+const turmas = ref<any[]>([]);
+const alunos = ref<any[]>([]);
+const disciplinas = ref<any[]>([]);
+const mappedData = ref<any[]>([]);
+
+function onTurmaChange() {
+    const selectedTurma = turmas.value.find(turma => turma.id === selectedTurmaId.value);
+        if (selectedTurma) {
+            newAtividade.turmaNome = selectedTurma.nome;
+        }
+}
+
+function onAlunoChange() {
+    const selectedAluno = alunos.value.find(aluno => aluno.id === selectedAlunoId.value);
+        if (selectedAluno) {
+            newAtividade.alunoNome = selectedAluno.nome;
+        }
+}
+
+function onDisciplinaChange() {
+    const selectedDisciplina = disciplinas.value.find(disciplina => disciplina.id === selectedDisciplinaId.value);
+        if (selectedDisciplina) {
+            newAtividade.disciplinaNome = selectedDisciplina.nome;
+        }
+}
+
+async function loadTurmas() {
+    turmas.value = await $fetch<any>('http://localhost:3000/api/turmas');
+}
+
+async function loadAlunos() {
+    alunos.value = await $fetch<any>('http://localhost:3000/api/aluno');
+}
+
+async function loadDisciplinas() {
+    disciplinas.value = await $fetch<any>('http://localhost:3000/api/disciplinas');
+}
+
+
+async function loadAtividades() {
+    data.value = await $fetch<any>('http://localhost:3000/api/atividade');
+
+    mappedData.value = data.value.map(atividade => {
+        return {
+            ...atividade,
+        };
     });
+}
 
-    const data = await $fetch<any>('http://localhost:3000/api/atividade');
+onMounted(async () => {
+    await loadTurmas(); 
+    await loadAlunos();
+    await loadDisciplinas();
+    await loadAtividades(); 
+});
 
-    const tableRef = shallowRef<InstanceType<typeof DataTableRef<any[]>> | null>(null);
+const tableRef = shallowRef<InstanceType<typeof DataTableRef<any[]>> | null>(null);
 
-    const options: Config = {
-        dom: "<'flex flex-col lg:flex-row w-full lg:items-start lg:justify-between gap-5 mb-5 lg:pr-1'Bf><'border rounded-lg't><'flex flex-col lg:flex-row gap-5 items-center lg:justify-between w-full pt-3 p-5 m-auto'lp>",
-        searching: true,
-        language: languageBR,
-        paging: true,
-        ordering: true,
-        responsive: true,
-        autoWidth: true,
-        select: {
-            style: 'multi',
-        },
-        buttons: [
-            {
-                text: () => (selectedRows.value > 0 ? 'Desselecionar' : 'Selecionar Todos'),
-                action: function (e, dt, node, config) {
-                    if (selectedRows.value > 0) {
-                        dt.rows().deselect();
-                        selectedRows.value = 0;
-                    } else {
-                        dt.rows().select();
-                        selectedRows.value = dt.rows({ selected: true }).count();
-                    }
-                },
-            },
-            {
-                text: 'Novo',
-                action: function (e, dt, node, config) {
-                    isEditing.value = false;
-                    Object.assign(newAtividade, {
-                        id: null,
-                        nome: '',
-                        dt: '',
-                        nota: '',
-                        turmaId: '',
-                        alunoId: '',
-                    });
-                    modalState.value = true;
-                },
-            },
-        ],
-    };
-
-    const columns: ConfigColumns[] = [
-        { data: 'id', title: 'Id' },
-        { data: 'turmaId', title: 'Turma' },
-        { data: 'alunoId', title: 'Aluno' },
-        { data: 'nome', title: 'Nome' },
-        { data: 'dt', title: 'Data' },
-        { data: 'nota', title: 'Nota' },
+const options: Config = {
+    dom: "<'flex flex-col lg:flex-row w-full lg:items-start lg:justify-between gap-5 mb-5 lg:pr-1'Bf><'border rounded-lg't><'flex flex-col lg:flex-row gap-5 items-center lg:justify-between w-full pt-3 p-5 m-auto'lp>",
+    searching: true,
+    language: languageBR,
+    paging: true,
+    ordering: true,
+    responsive: true,
+    autoWidth: true,
+    select: {
+        style: 'multi',
+    },
+    buttons: [
         {
-            data: null,
-            title: '',
-            className: 'no-export',
-            searchable: false,
-            orderable: false,
-            name: 'actions',
-            render: '#actions',
-            responsivePriority: 3,
+            text: () => (selectedRows.value > 0 ? 'Desselecionar' : 'Selecionar Todos'),
+            action: function (e, dt, node, config) {
+                if (selectedRows.value > 0) {
+                    dt.rows().deselect();
+                    selectedRows.value = 0;
+                } else {
+                    dt.rows().select();
+                    selectedRows.value = dt.rows({ selected: true }).count();
+                }
+            },
         },
-    ];
+        {
+            text: 'Novo',
+            action: function (e, dt, node, config) {
+                isEditing.value = false;
+                Object.assign(newAtividade, {
+                    id: null,
+                    nome: '',
+                    dt: '',
+                    nota: '',
+                    turmaNome: '',
+                    turmaId: '',
+                    alunoNome: '',
+                    alunoId: '',
+                    disciplinaId: '',
+                    disciplinaNome: ''
+                });
+                modalState.value = true;
+            },
+        },
+    ],
+};
 
-    const DatePickerComponent = defineAsyncComponent(() =>
+const columns: ConfigColumns = [
+    { title: 'Atividade', data: 'nome' },
+    { title: 'Turma', data: 'turmaNome' }, 
+    { title: 'Aluno', data: 'alunoNome' }, 
+    { title: 'Disciplina', data: 'disciplinaNome' },
+    { title: 'Nota', data: 'nota' }, 
+    { title: 'Data', data: 'dt' }, 
+    {
+        data: null,
+        title: "",
+        className: "no-export",
+        searchable: false,
+        orderable: false,
+        name: "actions",
+        render: "#actions",
+        responsivePriority: 3,
+    }
+];
+
+const DatePickerComponent = defineAsyncComponent(() =>
         import('vue3-datepicker').then((mod) => mod.default)
     );
 
-    function handleDateChange(date: Date) {
+function handleDateChange(date: Date) {
         newAtividade.dt = date.toISOString().split('T')[0];
-    }
+}
 
-    async function remove(user: any, event: Event) {
-        event.stopPropagation();
-        await $fetch('http://localhost:3000/api/atividade', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: { user },
-        }).then(() => {
-            const row = tableRef.value?.row((idx, data) => data.id === user.id);
-            if (row) {
-                row.remove().draw(false);
-            }
-        });
-    }
+async function remove(user: any, event: Event) {
+    event.stopPropagation();
+    await $fetch('http://localhost:3000/api/atividade', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: { user },
+    }).then(() => {
+        loadAtividades(); 
+    });
+}
 
-    function edit(user: any, event: Event) {
-        event.stopPropagation();
-        isEditing.value = true;
-        Object.assign(newAtividade, user);
-        editingRowIndex.value = data.findIndex((item: any) => item.id === user.id);
-        modalState.value = true;
-    }
+function edit(user: any, event: Event) {
+    event.stopPropagation();
+    isEditing.value = true;
+    Object.assign(newAtividade, {
+        ...user,
+        dt: ''
+    });
+    modalState.value = true;
+}
 
-    async function handleSave() {
-    let response;
+
+async function handleSave() {
+    newAtividade.turmaId = selectedTurmaId.value;
+    newAtividade.alunoId = selectedAlunoId.value
+    newAtividade.disciplinaId = selectedDisciplinaId.value
+
     if (isEditing.value) {
-        response = await $fetch('http://localhost:3000/api/atividade', {
+        const response = await $fetch(`http://localhost:3000/api/atividade`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(newAtividade),
         });
-        const row = tableRef.value?.row(editingRowIndex.value);
-        if (row) {
-            row.data(response).draw(false);
-            Object.assign(data[editingRowIndex.value], response);
-        }
     } else {
-        const requestData = {
-            ...newAtividade,
-            dt: new Date(newAtividade.dt).toISOString(),
-            nota: parseFloat(newAtividade.nota),
-            turmaId: selectedTurmaId.value,
-            alunoId: selectedAlunoId.value,
-        };
-
-        response = await $fetch('http://localhost:3000/api/atividade', {
+        const response = await $fetch('http://localhost:3000/api/atividade', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(requestData),
+            body: JSON.stringify(newAtividade),
         });
 
-        if (response && response.id !== undefined) {
-            tableRef.value?.row.add(response).draw();
-            data.push(response);
-        } else {
-            console.error('Invalid response data:', response);
-        }
+        tableRef.value?.row.add(response).draw();
+        data.value.push(response);
     }
 
     modalState.value = false;
+
     Object.assign(newAtividade, {
         id: null,
         nome: '',
         dt: '',
         nota: '',
+        turmaNome: '',
         turmaId: '',
+        alunoNome: '',
         alunoId: '',
+        disciplinaId: '',
+        disciplinaNome: ''
     });
-}
 
+    loadAtividades();
+}
 
     watch(selectedRows, (newValue) => {
         const selectButton = tableRef.value?.button(0);
@@ -299,23 +357,6 @@
             bindActionButtons();
         }
     });
-
-    const turmas = ref([]);
-    const alunos = ref([]);
-
-
-
-    onMounted(async () => {
-        const response = await fetch('http://localhost:3000/api/turmas');
-        const data = await response.json();
-        turmas.value = data;
-    });
-
-    onMounted(async () => {
-        const response = await fetch('http://localhost:3000/api/aluno');
-        const data = await response.json();
-        alunos.value = data;
-    })
 </script>
 
 <style scoped>

@@ -6,6 +6,7 @@ const prisma = new PrismaClient()
 export default defineEventHandler(async (event: H3Event) => {
   
   const body = await readBody(event);
+  console.log(body)
   
   try {
       const response = await prisma.aluno.create({
@@ -17,6 +18,7 @@ export default defineEventHandler(async (event: H3Event) => {
           celular: body.celular,
           celularResponsavel: body.celularResponsavel,
           turmaId: body.turmaId,
+          turmaNome: body.turmaNome
         },
       });
       return response;

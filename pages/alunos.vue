@@ -55,10 +55,8 @@
                                     <input id="emailResponsavel" v-model="newAluno.emailResponsavel" autocomplete="off" class="alert-input" />
 
                                     <UiLabel for="turma">Turma</UiLabel>
-                                    <select id="turma" v-model="selectedTurmaId" @change="updateSelectedTurmaName"
-                                        class="alert-input">
-                                        <option v-for="turma in turmas" :key="turma.id" :value="turma.id">{{
-                                            turma.nome }}</option>
+                                    <select id="turma" v-model="selectedTurmaId" @change="onTurmaChange" class="alert-input">
+                                        <option v-for="turma in turmas" :key="turma.id" :value="turma.id">{{ turma.nome }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -93,12 +91,14 @@ import {
     AlertDialogRoot,
     AlertDialogTitle,
 } from 'radix-vue';
+import { RefSymbol } from '@vue/reactivity';
 
 const selectedRows = ref(0);
 const isEditing = ref(false);
 const modalState = ref(false);
 const editingRowIndex = ref<number | null>(null);
 const selectedTurmaId = ref('');
+const selectedAlunoId = ref('');
 
 const newAluno = reactive({
     id: null,
@@ -109,15 +109,25 @@ const newAluno = reactive({
     celularResponsavel: '',
     emailResponsavel:'',
     turmaId: '',
+    turmaNome: '',
 });
 
 const data = ref<any[]>([]);
 const turmas = ref<any[]>([]);
+const alunos = ref<any[]>([]);
 const mappedData = ref<any[]>([]);
+
+function onTurmaChange() {
+    const selectedTurma = turmas.value.find(turma => turma.id === selectedTurmaId.value);
+        if (selectedTurma) {
+            newAluno.turmaNome = selectedTurma.nome;
+        }
+}
 
 async function loadTurmas() {
     turmas.value = await $fetch<any>('http://localhost:3000/api/turmas');
 }
+
 
 async function loadAlunos() {
     data.value = await $fetch<any>('http://localhost:3000/api/aluno');
@@ -125,14 +135,13 @@ async function loadAlunos() {
     mappedData.value = data.value.map(aluno => {
         return {
             ...aluno,
-            turmaNome: turmas.value.find(turma => turma.id === aluno.turmaId)?.nome || 'Desconhecida'
         };
     });
 }
 
 onMounted(async () => {
     await loadTurmas(); 
-    await loadAlunos(); 
+    await loadAlunos();
 });
 
 const tableRef = shallowRef<InstanceType<typeof DataTableRef<any[]>> | null>(null);
@@ -172,8 +181,9 @@ const options: Config = {
                     endereco: '',
                     nomeResponsavel: '',
                     celularResponsavel: '',
-                    emailResponsavel: '',
+                    emailResponsavel:'',
                     turmaId: '',
+                    turmaNome: '',
                 });
                 modalState.value = true;
             },
@@ -260,6 +270,7 @@ async function handleSave() {
         celularResponsavel: '',
         emailResponsavel: '',
         turmaId: '',
+        turmaNome: '',
     });
 
     loadAlunos();
@@ -307,5 +318,9 @@ async function handleSave() {
 <style scoped>
     .alert-input {
         @apply h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-[16px] ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground file:hover:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 sm:text-sm;
+    }
+
+    .datepicker-input {
+        @apply h-10 w-full bg-background border border-input rounded-md px-3 py-2 text-[16px] ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
     }
 </style>

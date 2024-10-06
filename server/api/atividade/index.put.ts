@@ -7,27 +7,29 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
   const nome = body.nome;
-  const email = body.email;
-  const endereco = body.endereco;
-  const nomeResponsavel = body.nomeResponsavel;
-  const celular = body.celular;
-  const celularResponsavel = body.celularResponsavel;
+  const alunoId = body.alunoId;
+  const alunoNome = body.alunoNome
   const turmaId = body.turmaId;
-
-  console.log(body)
+  const turmaNome = body.turmaNome;
+  const dt = new Date(body.dt);
+  const nota = parseFloat(body.nota);
+  const disciplinaId = body.disciplinaId;
+  const disciplinaNome = body.disciplinaNome;
   
   const atividade = await prisma.atividade.update({
     where: {
       id: body.id
     },
     data: {
-      email: email,
       nome: nome,
-      celular: celular,
-      endereco: endereco,
-      nomeResponsavel: nomeResponsavel,
-      celularResponsavel: celularResponsavel,
-      turmaId: turmaId
+      dt: dt,
+      nota: nota,
+      turmaId: turmaId,
+      turmaNome: turmaNome,
+      alunoId: alunoId,
+      alunoNome: alunoNome,
+      disciplinaId: disciplinaId,
+      disciplinaNome: disciplinaNome
     }
   })
 

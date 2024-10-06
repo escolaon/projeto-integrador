@@ -16,7 +16,7 @@ model Usuario {
   tipo        String       
   turmas      Turma[]
   ocorrencias Ocorrencia[]
-  disciplinas Disciplina[]
+  disciplinas Disciplina[] @relation("ProfessorDisciplina")
 }
 
 model Turma {
@@ -38,6 +38,7 @@ model Aluno {
   celularResponsavel String
   turma              Turma        @relation(fields: [turmaId], references: [id])
   turmaId            Int
+  turmaNome          String
   ocorrencias        Ocorrencia[]
   atividades         Atividade[]
 }
@@ -45,8 +46,9 @@ model Aluno {
 model Disciplina {
   id          Int     @id @default(autoincrement())
   nome        String
-  professor   Usuario @relation(fields: [professorId], references: [id])
+  professor  Usuario  @relation("ProfessorDisciplina", fields: [professorId], references: [id])
   professorId Int
+  atividades         Atividade[]
 }
 
 model Ocorrencia {
@@ -78,12 +80,17 @@ model Notificacao {
 }
 
 model Atividade {
-  id      Int      @id @default(autoincrement())
-  nome    String
-  dt      DateTime
-  nota    Float
-  turma   Turma    @relation(fields: [turmaId], references: [id])
-  turmaId Int
-  aluno   Aluno    @relation(fields: [alunoId], references: [id])
-  alunoId Int
+  id             Int      @id @default(autoincrement())
+  nome           String
+  dt             DateTime
+  nota           Float
+  turma          Turma    @relation(fields: [turmaId], references: [id])
+  turmaId        Int
+  turmaNome      String
+  aluno          Aluno    @relation(fields: [alunoId], references: [id])
+  alunoId        Int
+  alunoNome      String
+  disciplina     Disciplina    @relation(fields: [disciplinaId], references: [id])
+  disciplinaId   Int
+  disciplinaNome String
 }
