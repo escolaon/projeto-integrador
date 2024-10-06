@@ -8,6 +8,10 @@
       <template #actions="{ cellData }" class="flex items-center m-0 p-0"></template>
     </UiDatatable>
 
+    <div class="chart-container mt-6">
+      <canvas id="comparacaoChart" ref="comparacaoChart"></canvas>
+    </div>
+
     <AlertDialogRoot v-model:open="modalState">
       <AlertDialogPortal>
         <AlertDialogOverlay class="bg-background/80 backdrop-blur-sm data-[state=open]:animate-overlayShow fixed inset-0 z-30">
@@ -24,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, shallowRef, onMounted } from 'vue';
+import { ref, shallowRef, onMounted, nextTick } from 'vue';
 import type DataTableRef from 'datatables.net';
 import type { Config, ConfigColumns } from 'datatables.net';
 import languageBR from 'datatables.net-plugins/i18n/pt-BR.mjs';
@@ -35,11 +39,16 @@ import {
   AlertDialogPortal,
   AlertDialogRoot,
 } from 'radix-vue';
+import { Chart, registerables } from 'chart.js';
+
+Chart.register(...registerables);
 
 const modalState = ref(false);
 const data = ref<any[]>([]);
+const todosAlunos = ref<any[]>([]);
 const atividades = ref<any[]>([]);
 const tableRef = shallowRef<InstanceType<typeof DataTableRef<any[]>> | null>(null);
+const comparacaoChart = ref<HTMLCanvasElement | null>(null);
 
 const options: Config = {
   dom: "<'flex flex-col lg:flex-row w-full lg:items-start lg:justify-between gap-5 mb-5 lg:pr-1'Bf><'border rounded-lg't><'flex flex-col lg:flex-row gap-5 items-center lg:justify-between w-full pt-3 p-5 m-auto'lp>",
@@ -68,11 +77,11 @@ const columns: ConfigColumns[] = [
 
       return `
         <span style="cursor: pointer;" class="media-wrapper">
-          ${media.toFixed(2)}
+          ${media.toFixed(1)} <!-- Agora exibe a média com 1 casa decimal -->
           <span class="arrow">▼</span>
         </span>
         <div class="atividades-list" style="display: none;">
-          ${alunoAtividades.map(atividade => `<small>${atividade.nome}: ${atividade.nota.toFixed(1)}</small>`).join('<br/>')}
+          ${alunoAtividades.map(atividade => `<small>${atividade.nome}: ${atividade.nota.toFixed(1)}</small>`).join('<br/>')} <!-- Nota com 1 casa decimal -->
         </div>
       `;
     }
@@ -94,12 +103,14 @@ onMounted(async () => {
   const responseAtividades = await fetch('http://localhost:3000/api/atividade');
   const atividadesData = await responseAtividades.json();
   atividades.value = atividadesData; 
-
+  const alunos = (await fetch('http://localhost:3000/api/aluno'));
   const response = await fetch(`http://localhost:3000/api/aluno?type=${encodeURIComponent(userType)}&email=${encodeURIComponent(userEmail)}`);
   if (!response.ok) {
       console.error('Erro ao buscar os alunos:', response.statusText);
       return;
   }
+
+  todosAlunos.value = await alunos.json();
   const alunoData = await response.json();
   data.value = alunoData;
 
@@ -116,11 +127,95 @@ onMounted(async () => {
       }
     }
   });
+
+  await nextTick();
+  createComparacaoChart();
 });
+
+function createComparacaoChart() {
+  const ctx = comparacaoChart.value?.getContext('2d');
+
+  const alunosDaTurma = todosAlunos.value.filter(aluno => {
+    return aluno.turmaId === data.value[0].turmaId;
+  });
+
+  const alunoMedias = data.value.map(aluno => {
+    const alunoAtividades = atividades.value.filter(atividade => atividade.alunoId === aluno.id);
+    return alunoAtividades.length > 0 
+      ? alunoAtividades.reduce((acc, cur) => acc + cur.nota, 0) / alunoAtividades.length 
+      : null; 
+  });
+
+
+  const turmaMedias = alunosDaTurma.map(aluno => {
+    const alunoAtividades = atividades.value.filter(atividade => atividade.alunoId === aluno.id);
+    return alunoAtividades.length > 0 
+        ? alunoAtividades.reduce((acc, cur) => acc + cur.nota, 0) / alunoAtividades.length 
+        : null; 
+});
+
+  const validMedias = turmaMedias.filter(media => (media === null ? 0 : media)) as number[];
+  const somaMediasValidas = validMedias.reduce((acc, cur) => acc + cur, 0);
+  const turmaMedia = somaMediasValidas / alunosDaTurma.length;
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.value.map(aluno => aluno.nome),
+      datasets: [
+        {
+          label: 'Média do Aluno',
+          data: alunoMedias.map(media => media !== null ? media : 0),
+          backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        },
+        {
+          label: 'Média da Turma',
+          data: Array(data.value.length).fill(turmaMedia), 
+          backgroundColor: 'rgba(255, 99, 132, 0.6)',
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Média',
+          },
+        },
+        x: {
+          title: {
+            display: true,
+          },
+        },
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: 'Comparação de Média do Aluno com Média da Turma',
+        }
+      }
+    }
+  });
+}
+
 </script>
 
 <style scoped>
-.alert-input {
-  @apply h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-[16px] ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground file:hover:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 sm:text-sm;
+.chart-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.atividades-list {
+  margin-top: 5px;
+  color: #666;
 }
 </style>
