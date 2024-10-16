@@ -1,13 +1,32 @@
 services:
-  - type: web
+ - type: web
+    runtime: nodejs20.x
     name: escolaon
+    repo: https://github.com/escolaon/projeto-integrador
+    numInstances: 1   
+    region: oregon 
+    plan: starter    
+    branch: main     
+    buildCommand: npm run build
+    preDeployCommand: npm run db:generate && npm run db:migrate && npm run db:seed
+    startCommand: npm run start
+    autoDeploy: false 
+    maxShutdownDelaySeconds: 120 
     env: node
-    build:
-      command: npm run build
-    port: 3000
-    envVars:
+    envVars: 
+      - key: APP_NAME
+        value: Escola ON
+      - key: DESCRIPTION
+        value: Sistema de Gestão Escolar
+      - key: LANGUAGE
+        value: pt
+      - key: NITRO_HOST
+        value: localhost
+      - key: NITRO_PORT
+        value: 3000
+      - key: AUTH_SECRET
+        value: test-123
+      - key: AUTH_ORIGIN
+        value: http://localhost:3000
       - key: DATABASE_URL
-        value: ${{ secrets.POSTGRES_URL }}
-    secrets:
-      - name: POSTGRES_URL
-        value: postgres://username:password@host:port/dbname
+        sync=false
