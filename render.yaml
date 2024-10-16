@@ -1,7 +1,7 @@
 services:
   - type: web
     name: escolaon
-    runtime: nodejs20.x
+    runtime: node
     repo: https://github.com/escolaon/projeto-integrador
     numInstances: 1
     region: oregon
