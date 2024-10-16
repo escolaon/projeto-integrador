@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: escolaon
+    env: node
+    build:
+      command: npm run build
+    port: 3000
+    envVars:
+      - key: DATABASE_URL
+        value: ${{ secrets.POSTGRES_URL }}
+    secrets:
+      - name: POSTGRES_URL
+        value: postgres://username:password@host:port/dbname
