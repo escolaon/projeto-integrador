@@ -3,6 +3,7 @@ const lang = process.env.LANGUAGE;
 const title = process.env.APP_NAME;
 const url = process.env.PUBLIC_URL;
 const titleTemplate = process.env.DESCRIPTION;
+const baseURL = process.env.BASE_URL;
 export default defineNuxtConfig({
   // Devtools configuration
   devtools: { enabled: false },
@@ -50,7 +51,7 @@ export default defineNuxtConfig({
   auth: {
     globalAppMiddleware: true,
     originEnvKey: 'AUTH_ORIGIN',
-    baseURL: 'http://localhost:3000/api/auth',
+    baseURL,
     provider: { type: "authjs", },
     sessionRefresh: {
       enablePeriodically: true,
