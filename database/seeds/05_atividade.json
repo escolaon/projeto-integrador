@@ -1,0 +1,50 @@
+[
+    {
+        "id": 1,
+        "nome": "Teste 1",
+        "dt": "2024-10-24T10:30:00Z",
+        "nota": 8.5,
+        "turmaId": 1,
+        "turmaNome": "Turma A",
+        "alunoId": 1,
+        "alunoNome": "Carlos SIlva",
+        "disciplinaId": 1,
+        "disciplinaNome": "Matemática"
+    },
+    {
+        "id": 2,
+        "nome": "Teste 1",
+        "dt": "2024-10-25T10:30:00Z",
+        "nota": 8.0,
+        "turmaId": 1,
+        "turmaNome": "Turma A",
+        "alunoId": 1,
+        "alunoNome": "Carlos Silva",
+        "disciplinaId": 2,
+        "disciplinaNome": "Português"
+    },
+    {
+        "id": 3,
+        "nome": "Teste 1",
+        "dt": "2024-10-24T10:30:00Z",
+        "nota": 8.0,
+        "turmaId": 1,
+        "turmaNome": "Turma A",
+        "alunoId": 2,
+        "alunoNome": "Maria Souza",
+        "disciplinaId": 1,
+        "disciplinaNome": "Matemática"
+    },
+    {
+        "id": 4,
+        "nome": "Teste 1",
+        "dt": "2024-10-25T10:30:00Z",
+        "nota": 9.5,
+        "turmaId": 1,
+        "turmaNome": "Turma A",
+        "alunoId": 2,
+        "alunoNome": "Maria Souza",
+        "disciplinaId": 1,
+        "disciplinaNome": "Matemática"
+    }
+]

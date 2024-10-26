@@ -38,5 +38,13 @@
         "senha": "$2b$10$1yP2yGdrSwfSZMJCAjGPnuueZamK59XQZ0Owb/zL.Z.X2BDeFFILO",
         "celular": "5519974057577",
         "tipo": "professor"
+    },
+    {
+        "id": 6,
+        "nome": "Responsável Alunos Carlos e Maria",
+        "email": "responsavelmarcos@teste.com",
+        "senha": "$2b$10$1yP2yGdrSwfSZMJCAjGPnuueZamK59XQZ0Owb/zL.Z.X2BDeFFILO",
+        "celular": "5519974057579",
+        "tipo": "responsavel"
     }
 ]
