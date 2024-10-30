@@ -60,7 +60,34 @@ const options: Config = {
   autoWidth: true,
   select: {
     style: "multi",
-  }
+  },
+  buttons: [
+    {
+      extend: 'pdfHtml5',
+      text: 'Exportar PDF',
+      title: 'Relatório de Notas e Médias dos Alunos',
+      exportOptions: {
+        columns: ':visible',
+        format: {
+          body: function (data, row, column, node) {
+            let text = node.innerText || node.textContent;
+            text = text.replace(/[▼]/g, '').trim(); 
+            return text;
+          }
+        }
+      }
+    },
+  ],
+  columnDefs: [
+    {
+      targets: [1, 2],
+      visible: true,
+    },
+    {
+      targets: [0],
+      visible: false,
+    },
+  ]
 };
 
 const columns: ConfigColumns[] = [
@@ -77,11 +104,11 @@ const columns: ConfigColumns[] = [
 
       return `
         <span style="cursor: pointer;" class="media-wrapper">
-          ${media.toFixed(1)} <!-- Agora exibe a média com 1 casa decimal -->
+          ${media.toFixed(1)}
           <span class="arrow">▼</span>
         </span>
         <div class="atividades-list" style="display: none;">
-          ${alunoAtividades.map(atividade => `<small>${atividade.nome}: ${atividade.nota.toFixed(1)}</small>`).join('<br/>')} <!-- Nota com 1 casa decimal -->
+          ${alunoAtividades.map(atividade => `<small>${atividade.nome}: ${atividade.nota.toFixed(1)}</small>`).join('<br/>')}
         </div>
       `;
     }
@@ -146,13 +173,12 @@ function createComparacaoChart() {
       : null; 
   });
 
-
   const turmaMedias = alunosDaTurma.map(aluno => {
     const alunoAtividades = atividades.value.filter(atividade => atividade.alunoId === aluno.id);
     return alunoAtividades.length > 0 
         ? alunoAtividades.reduce((acc, cur) => acc + cur.nota, 0) / alunoAtividades.length 
         : null; 
-});
+  });
 
   const validMedias = turmaMedias.filter(media => (media === null ? 0 : media)) as number[];
   const somaMediasValidas = validMedias.reduce((acc, cur) => acc + cur, 0);
@@ -188,34 +214,26 @@ function createComparacaoChart() {
         x: {
           title: {
             display: true,
+            text: 'Alunos',
           },
         },
       },
-      plugins: {
-        legend: {
-          display: true,
-          position: 'top',
-        },
-        title: {
-          display: true,
-          text: 'Comparação de Média do Aluno com Média da Turma',
-        }
-      }
-    }
+    },
   });
 }
-
 </script>
 
 <style scoped>
-.chart-container {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
+.media-wrapper {
+  position: relative;
 }
 
 .atividades-list {
-  margin-top: 5px;
-  color: #666;
+  display: none;
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 1000;
 }
 </style>
