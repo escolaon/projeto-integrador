@@ -94,6 +94,7 @@
     AlertDialogTitle,
     AlertDialogTrigger,
   } from 'radix-vue';
+  const config = useRuntimeConfig()
 
   const selectedRows = ref(0);
   const isEditing = ref(false);
@@ -120,7 +121,7 @@ const newOcorrencia = reactive({
   disciplinaNome: '',
 });
 
-  const data = await $fetch<any>("http://localhost:3000/api/ocorrencia");
+  const data = await $fetch<any>(`${config.public.url}/api/ocorrencia`);
 
   const tableRef = shallowRef<InstanceType<typeof DataTableRef<any[]>> | null>(null);
 
@@ -228,7 +229,7 @@ const newOcorrencia = reactive({
   async function remove(user: any, event: Event) {
     event.stopPropagation(); 
 
-    $fetch("http://localhost:3000/api/ocorrencia", {
+    $fetch(`${config.public.url}/api/ocorrencia`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -254,7 +255,7 @@ const newOcorrencia = reactive({
 
 
   async function handleSave() {
-      const response = await $fetch("http://localhost:3000/api/ocorrencia", {
+      const response = await $fetch(`${config.public.url}/api/ocorrencia`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -286,25 +287,25 @@ const professores = ref([]);
 const disciplinas = ref([]);
 
 onMounted(async () => {
-  const response = await fetch('http://localhost:3000/api/turmas');
+  const response = await fetch(`${config.public.url}/api/turmas`);
   const data = await response.json();
   turmas.value = data;
 });
 
 onMounted(async () => {
-  const response = await fetch('http://localhost:3000/api/aluno');
+  const response = await fetch(`${config.public.url}/api/aluno`);
   const data = await response.json();
   alunos.value = data;
 });
 
 onMounted(async () => {
-  const response = await fetch('http://localhost:3000/api/professor');
+  const response = await fetch(`${config.public.url}/api/professor`);
   const data = await response.json();
   professores.value = data;
 });
 
 onMounted(async () => {
-  const response = await fetch('http://localhost:3000/api/disciplinas');
+  const response = await fetch(`${config.public.url}/api/disciplinas`);
   const data = await response.json();
   disciplinas.value = data;
 });

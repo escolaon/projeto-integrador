@@ -93,6 +93,8 @@
         AlertDialogTrigger,
     } from 'radix-vue';
 
+    const config = useRuntimeConfig()
+
     const selectedRows = ref(0);
     const isEditing = ref(false);
     const modalState = ref(false);
@@ -104,7 +106,7 @@
         nome: '',
     });
 
-    const data = await $fetch<any>("http://localhost:3000/api/disciplinas");
+    const data = await $fetch<any>(`${config.public.url}/api/disciplinas`);
 
     const tableRef = shallowRef<InstanceType<typeof DataTableRef<any[]>> | null>(null);
 
@@ -211,11 +213,10 @@
 
 
 
-
     async function remove(user: any, event: Event) {
         event.stopPropagation();
 
-        $fetch("http://localhost:3000/api/disciplinas", {
+        $fetch(`${config.public.url}/api/disciplinas`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -242,7 +243,7 @@
 
     async function handleSave() {
         if (isEditing.value) {
-            const response = await $fetch(`http://localhost:3000/api/disciplinas`, {
+            const response = await $fetch(`${config.public.url}/api/disciplinas`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -256,13 +257,14 @@
                 Object.assign(data[editingRowIndex.value], response);
             }
         } else {
-            const response = await $fetch("http://localhost:3000/api/disciplinas", {
+            const response = await $fetch(`${config.public.url}/api/disciplinas`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ nome: newDisciplina.nome }),
             });
+
 
             tableRef.value?.row.add(response).draw();
             data.push(response);
@@ -275,7 +277,7 @@
     const turmas = ref([]);
 
     onMounted(async () => {
-        const response = await fetch('http://localhost:3000/api/turmas');
+        const response = await fetch(`${config.public.url}/api/turmas`);
         const data = await response.json();
         turmas.value = data;
     });

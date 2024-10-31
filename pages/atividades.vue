@@ -105,7 +105,7 @@ const selectedTurmaId = ref('');
 const selectedAlunoId = ref('');
 const selectedDisciplinaId = ref('');
 
-
+const config = useRuntimeConfig()
 
 const newAtividade = reactive({
     id: null,
@@ -148,20 +148,20 @@ function onDisciplinaChange() {
 }
 
 async function loadTurmas() {
-    turmas.value = await $fetch<any>('http://localhost:3000/api/turmas');
+    turmas.value = await $fetch<any>(`${config.public.url}/api/turmas`);
 }
 
 async function loadAlunos() {
-    alunos.value = await $fetch<any>('http://localhost:3000/api/aluno');
+    alunos.value = await $fetch<any>(`${config.public.url}/api/aluno`);
 }
 
 async function loadDisciplinas() {
-    disciplinas.value = await $fetch<any>('http://localhost:3000/api/disciplinas');
+    disciplinas.value = await $fetch<any>(`${config.public.url}/api/disciplinas`);
 }
 
 
 async function loadAtividades() {
-    data.value = await $fetch<any>('http://localhost:3000/api/atividade');
+    data.value = await $fetch<any>(`${config.public.url}/api/atividade`);
 
     mappedData.value = data.value.map(atividade => {
         return {
@@ -254,7 +254,7 @@ function handleDateChange(date: Date) {
 
 async function remove(user: any, event: Event) {
     event.stopPropagation();
-    await $fetch('http://localhost:3000/api/atividade', {
+    await $fetch(`${config.public.url}/api/atividade`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -282,7 +282,7 @@ async function handleSave() {
     newAtividade.disciplinaId = selectedDisciplinaId.value
 
     if (isEditing.value) {
-        const response = await $fetch(`http://localhost:3000/api/atividade`, {
+        const response = await $fetch(`${config.public.url}/api/atividade`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -290,7 +290,7 @@ async function handleSave() {
             body: JSON.stringify(newAtividade),
         });
     } else {
-        const response = await $fetch('http://localhost:3000/api/atividade', {
+        const response = await $fetch(`${config.public.url}/api/atividade`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -154,4 +154,10 @@ export default defineNuxtConfig({
   },
 
   compatibilityDate: "2024-08-19",
+
+  runtimeConfig: {
+    public: {
+      url: process.env.PUBLIC_URL,
+    }
+  }
 });

@@ -41,6 +41,8 @@ import {
 } from 'radix-vue';
 import { Chart, registerables } from 'chart.js';
 
+const config = useRuntimeConfig()
+
 Chart.register(...registerables);
 
 const modalState = ref(false);
@@ -127,11 +129,11 @@ const userType = sessionData.value?.tipo;
 const userEmail = sessionData.value?.email;
 
 onMounted(async () => {
-  const responseAtividades = await fetch('http://localhost:3000/api/atividade');
+  const responseAtividades = await fetch(`${config.public.url}/api/atividade`);
   const atividadesData = await responseAtividades.json();
   atividades.value = atividadesData; 
-  const alunos = (await fetch('http://localhost:3000/api/aluno'));
-  const response = await fetch(`http://localhost:3000/api/aluno?type=${encodeURIComponent(userType)}&email=${encodeURIComponent(userEmail)}`);
+  const alunos = (await fetch(`${config.public.url}/api/aluno`));
+  const response = await fetch(`${config.public.url}/api/aluno?type=${encodeURIComponent(userType)}&email=${encodeURIComponent(userEmail)}`);
   if (!response.ok) {
       console.error('Erro ao buscar os alunos:', response.statusText);
       return;

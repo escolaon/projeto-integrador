@@ -105,7 +105,9 @@
     celular: '',
   });
 
-  const data = await $fetch<any>("http://localhost:3000/api/professor");
+  const config = useRuntimeConfig()
+
+  const data = await $fetch<any>(`${config.public.url}/api/professor`);
 
   const tableRef = shallowRef<InstanceType<typeof DataTableRef<any[]>> | null>(null);
 
@@ -217,7 +219,7 @@
   async function remove(user: any, event: Event) {
     event.stopPropagation(); // Impede a propagação do evento de clique
 
-    $fetch("http://localhost:3000/api/professor", {
+    $fetch(`${config.public.url}/api/professor`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -244,7 +246,7 @@
 
   async function handleSave() {
     if (isEditing.value) {
-      const response = await $fetch(`http://localhost:3000/api/professor`, {
+      const response = await $fetch(`${config.public.url}/api/professor`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -258,13 +260,14 @@
         Object.assign(data[editingRowIndex.value], response); // Atualiza os dados na variável data
       }
     } else {
-      const response = await $fetch("http://localhost:3000/api/professor", {
+      const response = await $fetch(`${config.public.url}/api/professor`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newUser),
       });
+
 
       tableRef.value?.row.add(response).draw();
       data.push(response); // Adiciona o novo usuário aos dados

@@ -13,6 +13,7 @@
 
   const tableRef = shallowRef<InstanceType<typeof DataTableRef<any[]>> | null>(null);
   const selectedRows = ref(0);
+  const config = useRuntimeConfig()
 
   const options: Config = {
 
@@ -47,7 +48,7 @@
             const rows = selectedRows.map((item: any) => item.id);
             for (let i = 0; i < rows.length; i++) {
               const id = rows[i];
-              await $fetch(`http://localhost:3000/api/notificacao`, {
+              await $fetch(`${config.public.url}/api/notificacao`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -62,7 +63,7 @@
     ],
   };
 
-  const dataFetched = await $fetch<any>("http://localhost:3000/api/notificacao/pendente");
+  const dataFetched = await $fetch<any>(`${config.public.url}/api/notificacao/pendente`);
   let data: any[] = [];
   if (dataFetched) {
     data = dataFetched.map((item: any) => {

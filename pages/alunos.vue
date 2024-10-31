@@ -93,6 +93,8 @@ import {
 } from 'radix-vue';
 import { RefSymbol } from '@vue/reactivity';
 
+const config = useRuntimeConfig()
+
 const selectedRows = ref(0);
 const isEditing = ref(false);
 const modalState = ref(false);
@@ -125,12 +127,12 @@ function onTurmaChange() {
 }
 
 async function loadTurmas() {
-    turmas.value = await $fetch<any>('http://localhost:3000/api/turmas');
+    turmas.value = await $fetch<any>(`${config.public.url}/api/turmas`);
 }
 
 
 async function loadAlunos() {
-    data.value = await $fetch<any>('http://localhost:3000/api/aluno');
+    data.value = await $fetch<any>(`${config.public.url}/api/aluno`);
 
     mappedData.value = data.value.map(aluno => {
         return {
@@ -216,7 +218,7 @@ const columns: ConfigColumns = [
 
 async function remove(user: any, event: Event) {
     event.stopPropagation();
-    await $fetch('http://localhost:3000/api/aluno', {
+    await $fetch(`${config.public.url}/api/aluno`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -239,7 +241,7 @@ async function handleSave() {
     newAluno.turmaId = selectedTurmaId.value;
 
     if (isEditing.value) {
-        const response = await $fetch(`http://localhost:3000/api/aluno`, {
+        const response = await $fetch(`${config.public.url}/api/aluno`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -247,7 +249,7 @@ async function handleSave() {
             body: JSON.stringify(newAluno),
         });
     } else {
-        const response = await $fetch('http://localhost:3000/api/aluno', {
+        const response = await $fetch(`${config.public.url}/api/aluno`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

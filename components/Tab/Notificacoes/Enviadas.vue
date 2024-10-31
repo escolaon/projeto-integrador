@@ -8,7 +8,7 @@
 <script lang="ts" setup>
   import type { Config, ConfigColumns } from 'datatables.net';
   import languageBR from 'datatables.net-plugins/i18n/pt-BR.mjs';
-
+  const config = useRuntimeConfig()
 
   const options: Config = {
 
@@ -24,7 +24,7 @@
     }
   };
 
-  const dataFetched = await $fetch<any>("http://localhost:3000/api/notificacao/enviadas");
+  const dataFetched = await $fetch<any>(`${config.public.url}/api/notificacao/enviadas`);
   const data = dataFetched.map((item: any) => {
     return {
       id: item.id,
