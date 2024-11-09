@@ -6,7 +6,7 @@ Agora, acompanhe o desempenho escolar de alunos através de um acesso esxclusivo
 
 ## Visão Geral
 
-Este projeto utiliza uma arquitetura robusta baseada em Nuxt.js, com um banco de dados sqLite gerenciado pelo Prisma. Integramos a API do WPPConnect para o envio de mensagens, e o frontend é desenvolvido com TailwindCSS e Ui-Thing para uma experiência de usuário fluida e responsiva.
+Este projeto utiliza uma arquitetura robusta baseada em Nuxt.js, com um banco de dados PostgreSQL gerenciado pelo Prisma. Integramos a API do WPPConnect para o envio de mensagens, e o frontend é desenvolvido com TailwindCSS e Ui-Thing para uma experiência de usuário fluida e responsiva.
 
 ## Funcionalidades Principais
 
